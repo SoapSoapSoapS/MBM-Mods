@@ -1,53 +1,94 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections.Generic;
+using BepInEx;
 using BepInEx.Unity.IL2CPP;
-using HarmonyLib;
-using HarmonyLib.Tools;
+using MbmModdingTools;
+using MBMScripts;
 
 namespace CureVenerealDisease
 {
     [BepInPlugin(GUID, MODNAME, VERSION)]
+    [BepInDependency(ToolsPlugin.GUID)]
     public class CvdPlugin : BasePlugin
     {
         public const string
             MODNAME = nameof(CureVenerealDisease),
             AUTHOR = "SoapBoxHero",
             GUID = "com." + AUTHOR + "." + MODNAME,
-            VERSION = "1.1.0.0";
+            VERSION = "2.0.0.0";
 
-        public static BepInEx.Logging.ManualLogSource log;
+        /// <summary>
+        /// Mod log instance
+        /// </summary>
+        public static BepInEx.Logging.ManualLogSource? log;
+
+        /// <inheritdoc cref="ToolsPlugin.Females"/>
+        public static IDictionary<int, Female> Females
+        {
+            get => ToolsPlugin.Females;
+        }
+
+        /// <inheritdoc cref="ToolsPlugin.GM"/>
+        public static GameManager? GM
+        {
+            get => ToolsPlugin.GM;
+        }
+
+        /// <inheritdoc cref="ToolsPlugin.PD"/>
+        public static PlayData? PD
+        {
+            get => ToolsPlugin.PD;
+        }
 
         public CvdPlugin()
         {
             log = Log;
         }
 
-        [HarmonyPatch(typeof(MBMScripts.Character), nameof(MBMScripts.Character.UpdateState))]
-        [HarmonyPostfix]
-        public static void PostFix(MBMScripts.Character __instance)
+        public override void Load()
         {
-            if (__instance.VenerealDisease)
-            {
-                log.LogMessage("Curing venereal disease");
+            ToolsPlugin.RegisterPeriodicAction(1, Run);
+        }
 
-                __instance.VenerealDisease = false;
+        public static void Run()
+        {
+
+        }
+
+        public static void CVD(Female female)
+        {
+            if (female.VenerealDisease && !female.DisplayName.Contains("cvdexclude"))
+            {
+                log?.LogDebug("Curing Venereal disease");
+                female.VenerealDisease = false;
             }
         }
 
-        public override void Load()
+        public static void BuyCondomAndLoveGel(PlayData instance)
         {
             try
             {
-                log.LogMessage("Starting Harmony Patch");
+                InteractionSenaLena? senaLena = null;
 
-                HarmonyFileLog.Enabled = true;
-                var harmony = new Harmony(GUID);
-                harmony.PatchAll(typeof(CvdPlugin));
+                if (instance.CountOfCondomBuyable > 0 && instance.HaveEnoughGold(10000))
+                {
+                    log?.LogDebug("Buying Condoms");
+                    senaLena ??= UnityEngine.Object.FindObjectOfType<InteractionSenaLena>();
+                    senaLena.SetCondomCountToBuy(instance.m_CountOfCondomBuyable);
+                    senaLena.BuyCondom();
+                }
 
-                log.LogMessage("Harmony Patch Successful");
+                if (instance.CountOfLoveGelBuyable > 0 && instance.HaveEnoughGold(10000))
+                {
+                    log?.LogDebug("Buying LoveGel");
+                    senaLena ??= UnityEngine.Object.FindObjectOfType<InteractionSenaLena>();
+                    senaLena.SetCondomCountToBuy(instance.m_CountOfCondomBuyable);
+                    senaLena.BuyCondom();
+                }
             }
-            catch
+            catch (Exception e)
             {
-                log.LogMessage("Harmony Patch Failed");
+                log?.LogError(e);
             }
         }
     }
