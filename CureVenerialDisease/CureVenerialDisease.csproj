@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\mbmModdingTools\MbmModdingTools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
@@ -59,9 +63,7 @@
 	<Target Name="CopyDLLs" AfterTargets="Build">
 		<Message Text="Executing CopyDLLs task" Importance="High" />
 
-		<Copy
-		  SourceFiles="$(TargetDir)$(ProjectName).dll"
-		  DestinationFolder="C:\Games\source\MonsterBlackMarketMod\BepInEx\plugins\$(ProjectName)" />
+		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="C:\Games\source\MonsterBlackMarketMod\BepInEx\plugins\$(ProjectName)" />
 
 		<Message Text="Copied build files" Importance="High" />
 	</Target>

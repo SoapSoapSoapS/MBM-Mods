@@ -6,6 +6,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\mbmModdingTools\MbmModdingTools.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="0Harmony">
 			<HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\0Harmony.dll</HintPath>
 			<Private>False</Private>
