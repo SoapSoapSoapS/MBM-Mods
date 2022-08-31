@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
 using MbmModdingTools;
 using MBMScripts;
@@ -40,55 +40,47 @@ namespace CureVenerealDisease
             get => ToolsPlugin.PD;
         }
 
+        public ConfigEntry<string> ExcludePhrase;
+
         public CvdPlugin()
         {
             log = Log;
+            ExcludePhrase = Config.Bind(
+                new ConfigDefinition("General", "ExcludePhrase"),
+                "cvdexclude",
+                new ConfigDescription("If this exact phrase is in a female's name then that unit will not be cured."));
         }
 
+        /// <summary>
+        /// Register plugin to run.
+        /// </summary>
         public override void Load()
         {
+            Log.LogMessage("Registering");
             ToolsPlugin.RegisterPeriodicAction(1, Run);
         }
 
-        public static void Run()
+        /// <summary>
+        /// Runs plugin on all owned females.
+        /// </summary>
+        public void Run()
         {
-
+            var ownedFemales = ToolsPlugin.GetOwnedFemales();
+            foreach(var female in ownedFemales)
+            {
+                CVD(female);
+            }
         }
 
-        public static void CVD(Female female)
+        /// <summary>
+        /// Cure the target of venereal disease.
+        /// </summary>
+        public void CVD(Female female)
         {
-            if (female.VenerealDisease && !female.DisplayName.Contains("cvdexclude"))
+            if (female.VenerealDisease && !female.DisplayName.Contains(ExcludePhrase.Value))
             {
-                log?.LogDebug("Curing Venereal disease");
+                Log.LogDebug("Curing Venereal disease");
                 female.VenerealDisease = false;
-            }
-        }
-
-        public static void BuyCondomAndLoveGel(PlayData instance)
-        {
-            try
-            {
-                InteractionSenaLena? senaLena = null;
-
-                if (instance.CountOfCondomBuyable > 0 && instance.HaveEnoughGold(10000))
-                {
-                    log?.LogDebug("Buying Condoms");
-                    senaLena ??= UnityEngine.Object.FindObjectOfType<InteractionSenaLena>();
-                    senaLena.SetCondomCountToBuy(instance.m_CountOfCondomBuyable);
-                    senaLena.BuyCondom();
-                }
-
-                if (instance.CountOfLoveGelBuyable > 0 && instance.HaveEnoughGold(10000))
-                {
-                    log?.LogDebug("Buying LoveGel");
-                    senaLena ??= UnityEngine.Object.FindObjectOfType<InteractionSenaLena>();
-                    senaLena.SetCondomCountToBuy(instance.m_CountOfCondomBuyable);
-                    senaLena.BuyCondom();
-                }
-            }
-            catch (Exception e)
-            {
-                log?.LogError(e);
             }
         }
     }
