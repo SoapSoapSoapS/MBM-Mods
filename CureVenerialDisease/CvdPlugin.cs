@@ -5,7 +5,7 @@ using BepInEx.Unity.IL2CPP;
 using MbmModdingTools;
 using MBMScripts;
 
-namespace CureVenerealDisease
+namespace CureVenerialDisease
 {
     [BepInPlugin(GUID, MODNAME, VERSION)]
     [BepInDependency(ToolsPlugin.GUID)]
@@ -66,7 +66,7 @@ namespace CureVenerealDisease
         public void Run()
         {
             var ownedFemales = ToolsPlugin.GetOwnedFemales();
-            foreach(var female in ownedFemales)
+            foreach (var female in ownedFemales)
             {
                 CVD(female);
             }
