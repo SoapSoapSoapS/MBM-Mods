@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
+using MbmModdingTools;
 
-namespace PixyPlus
+namespace HealthPixyPlus
 {
     public class Config
     {
@@ -16,7 +17,7 @@ namespace PixyPlus
                 Description = "If enabled, will force low health event to trick pixy into moving the unit to a cage",
                 DefaultValue = true
             };
-            AutoRestFromBreedingRoomEnabled = setting1.Bind(file);
+            AutoRestFromBreedingRoomEnabled = file.Bind(setting1);
 
             var setting2 = new ConfigInfo<bool>()
             {
@@ -25,25 +26,7 @@ namespace PixyPlus
                 Description = "If enabled, will move units to cage after milking and birth",
                 DefaultValue = true
             };
-            AutoRestEnabled = setting2.Bind(file);
-        }
-    }
-
-    public struct ConfigInfo<T>
-    {
-        public string Section;
-        public string Name;
-        public string Description;
-        public T DefaultValue;
-        public AcceptableValueBase? AcceptableValues;
-
-        public ConfigEntry<T> Bind(ConfigFile file)
-        {
-            if(AcceptableValues == null)
-            {
-                return file.Bind(new ConfigDefinition(Section, Name), DefaultValue, new ConfigDescription(Description));
-            }
-            return file.Bind(new ConfigDefinition(Section, Name), DefaultValue, new ConfigDescription(Description, AcceptableValues));
+            AutoRestEnabled = file.Bind(setting2);
         }
     }
 }
