@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CureVenerialDisease", "CureVenerialDisease\CureVenerialDisease.csproj", "{3EFB2C0B-330D-403C-9126-1B870456BD78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CureVenerealDisease", "CureVenerialDisease\CureVenerealDisease.csproj", "{3EFB2C0B-330D-403C-9126-1B870456BD78}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MbmModdingTools", "mbmModdingTools\MbmModdingTools.csproj", "{1BAD7716-BF9E-418C-AD02-6FAD603FD086}"
 EndProject
@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoBuyCondomAndLoveGel", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthPixyPlus", "HealthPixyPlus\HealthPixyPlus.csproj", "{B8C8D092-B059-4D9E-9543-BAC8D6FC20ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless", "Restless\Restless.csproj", "{AE8FD2D7-3420-4E33-B5E8-6980C349212B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restless", "Restless\Restless.csproj", "{AE8FD2D7-3420-4E33-B5E8-6980C349212B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F923A978-C760-4502-8DC4-F048528BADE9}"
+	ProjectSection(SolutionItems) = preProject
+		readme = readme
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

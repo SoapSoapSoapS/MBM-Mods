@@ -5,7 +5,7 @@ using BepInEx.Unity.IL2CPP;
 using MbmModdingTools;
 using MBMScripts;
 
-namespace CureVenerialDisease
+namespace CureVenerealDisease
 {
     [BepInPlugin(GUID, MODNAME, VERSION)]
     [BepInDependency(ToolsPlugin.GUID)]
