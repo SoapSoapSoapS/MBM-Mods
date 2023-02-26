@@ -55,5 +55,13 @@
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
+
+	<Target Name="CopyDLLs" AfterTargets="Build">
+		<Message Text="Executing CopyDLLs task" Importance="High" />
+
+		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="C:\Games\source\MonsterBlackMarketMod\BepInEx\plugins\$(ProjectName)" />
+
+		<Message Text="Copied build files" Importance="High" />
+	</Target>
 	
 </Project>

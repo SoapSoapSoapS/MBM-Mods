@@ -5,8 +5,6 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using HarmonyLib.Tools;
 using MBMScripts;
-using UnityEngine;
-using Action = System.Action;
 
 namespace MbmModdingTools
 {
@@ -45,12 +43,7 @@ namespace MbmModdingTools
         /// <summary>
         /// List of actions to be run periodically
         /// </summary>
-        private static readonly IList<PeriodicAction> PeriodicActions = new List<PeriodicAction>();
-
-        public ToolsPlugin()
-        {
-            log = Log;
-        }
+        private static readonly IDictionary<float, PeriodicActionGroup> PeriodicActionGroups = new Dictionary<float, PeriodicActionGroup>();
 
         /// <summary>
         /// Collect instances of female object
@@ -91,14 +84,21 @@ namespace MbmModdingTools
         [HarmonyPostfix]
         public static void OnUpdate(float deltaTime)
         {
-            foreach(var action in PeriodicActions)
+            foreach(var kvp in PeriodicActionGroups)
             {
-                action.timeSinceRun += deltaTime;
-                if(action.timeSinceRun > action.period)
+                var pag = kvp.Value;
+                pag.timeSinceRun += deltaTime;
+                if(pag.timeSinceRun > pag.period)
                 {
-                    action.act();
+                    pag.Act();
+                    pag.timeSinceRun = 0;
                 }
             }
+        }
+
+        public ToolsPlugin()
+        {
+            log = Log;
         }
 
         /// <summary>
@@ -108,46 +108,90 @@ namespace MbmModdingTools
         {
             try
             {
-                log?.LogMessage("Starting Harmony Patch");
+                Log.LogMessage("Starting Harmony Patch");
                 HarmonyFileLog.Enabled = true;
                 var harmony = new Harmony(GUID);
                 harmony.PatchAll(typeof(ToolsPlugin));
 
-                log?.LogMessage("Harmony Patch Successful");
+                Log.LogMessage("Harmony Patch Successful");
             }
             catch
             {
-                log?.LogMessage("Harmony Patch Failed");
+                Log.LogWarning("Harmony Patch Failed");
             }
         }
 
         /// <summary>
         /// Registers an action to run approximatley every "period" seconds.
         /// </summary>
-        /// <param name="period">dfd</param>
-        /// <param name="act"><sdf/param>
-        /// <returns></returns>
         public static PeriodicAction RegisterPeriodicAction(float period, Action act)
         {
-            var pact = new PeriodicAction
+            var paction = new PeriodicAction(act);
+
+            if(PeriodicActionGroups.TryGetValue(period, out var pag))
             {
-                id = Guid.NewGuid(),
-                timeSinceRun = 0,
-                period = period,
-                act = act
-            };
+                pag.actions.Add(paction);
+            }
+            else
+            {
+                PeriodicActionGroups.Add(period, new PeriodicActionGroup(period, paction));
+            }
 
-            PeriodicActions.Add(pact);
+            return paction;
+        }
 
-            return pact;
+        /// <summary>
+        /// Get only females who the player owns.
+        /// </summary>
+        public static IEnumerable<Female> GetOwnedFemales()
+        {
+            if (PD == null)
+                yield break;
+
+            var units = PD.GetUnitList(ESector.Female);
+            for (int i = 0; i < units.Count; i++)
+            {
+                var unit = units[i];
+                if (!Females.TryGetValue(unit.UnitId, out var female))
+                    continue;
+
+                yield return female;
+            }
         }
     }
 
     public class PeriodicAction
     {
         public Guid id;
+        public Action act;
+
+        public PeriodicAction(Action act)
+        {
+            id = Guid.NewGuid();
+            this.act = act;
+        }
+    }
+
+    public class PeriodicActionGroup
+    {
+        public Guid id;
         public float timeSinceRun;
         public float period;
-        public Action act;
+        public IList<PeriodicAction> actions = new List<PeriodicAction>();
+
+        public PeriodicActionGroup(float period, PeriodicAction act)
+        {
+            timeSinceRun = 0;
+            this.period = period;
+            actions.Add(act);
+        }
+
+        public void Act()
+        {
+            foreach(var action in actions)
+            {
+                action.act();
+            }
+        }
     }
 }
