@@ -7,53 +7,63 @@
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\interop\Assembly-CSharp.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\interop\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx.Core">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\BepInEx.Core.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\BepInEx.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx.Unity.IL2CPP">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Il2CppInterop.Common">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.Common.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Il2CppInterop.Generator">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.Generator.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.Generator.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Il2CppInterop.HarmonySupport">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.HarmonySupport.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.HarmonySupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Il2CppInterop.Runtime">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.Runtime.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\core\Il2CppInterop.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Il2Cppmscorlib">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Il2CppSystem">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\interop\Il2CppSystem.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\interop\Il2CppSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\interop\UnityEngine.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\interop\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\.source\MonsterBlackMarketMod\BepInEx\interop\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>C:\Games\source\MonsterBlackMarketMod\BepInEx\interop\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+
+	<Target Name="CopyDLLs" AfterTargets="Build">
+		<Message Text="Executing CopyDLLs task" Importance="High" />
+
+		<Copy
+		  SourceFiles="$(TargetDir)$(ProjectName).dll"
+		  DestinationFolder="C:\Games\source\MonsterBlackMarketMod\BepInEx\plugins\$(ProjectName)" />
+
+		<Message Text="Copied build files" Importance="High" />
+	</Target>
   
 </Project>
