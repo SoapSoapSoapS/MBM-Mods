@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless", "Restless\Restless.csproj", "{2FE2E307-680D-43ED-A1B4-30806348DAF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBMTools", "MBM Tools\MBMTools.csproj", "{E9251628-2D90-47D6-B1D1-74296096397B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2FE2E307-680D-43ED-A1B4-30806348DAF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FE2E307-680D-43ED-A1B4-30806348DAF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FE2E307-680D-43ED-A1B4-30806348DAF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9251628-2D90-47D6-B1D1-74296096397B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9251628-2D90-47D6-B1D1-74296096397B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9251628-2D90-47D6-B1D1-74296096397B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9251628-2D90-47D6-B1D1-74296096397B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

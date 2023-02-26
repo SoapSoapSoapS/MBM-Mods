@@ -292,3 +292,4 @@ tools/
 
 # custom
 .sources
+.vscode
