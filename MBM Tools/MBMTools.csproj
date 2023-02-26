@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Tools</RootNamespace>
-    <AssemblyName>SSS.MBMTools</AssemblyName>
+    <AssemblyName>sss.plugins.mbmtools</AssemblyName>
+    <Product>MBMTools</Product>
     <Version>0.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>

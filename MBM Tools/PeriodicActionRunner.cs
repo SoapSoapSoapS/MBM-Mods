@@ -1,6 +1,5 @@
 using System;
 using HarmonyLib;
-using HarmonyLib.Tools;
 using MBMScripts;
 using System.Collections.Generic;
 
@@ -15,9 +14,9 @@ public static class PeriodicActionRunner {
     /// <summary>
     /// Registers an action to run approximatley every "period" seconds.
     /// </summary>
-    public static PeriodicAction RegisterPeriodicAction(float period, Action act)
+    public static CustomAction RegisterPeriodicAction(float period, Action act)
     {
-        var paction = new PeriodicAction(act);
+        var paction = new CustomAction(act);
 
         if(PeriodicActionGroups.TryGetValue(period, out var pag))
         {

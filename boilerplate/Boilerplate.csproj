@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Boilerplate</RootNamespace>
-    <AssemblyName>SSS.Boilerplate</AssemblyName>
+    <AssemblyName>sss.plugins.boilerplate</AssemblyName>
+    <Product>Boilerplate</Product>
     <Version>0.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>

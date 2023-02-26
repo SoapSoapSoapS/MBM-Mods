@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Restless</RootNamespace>
-    <AssemblyName>SSS.Restless</AssemblyName>
+    <AssemblyName>sss.plugins.restless</AssemblyName>
+    <Product>Restless</Product>
     <Version>0.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
