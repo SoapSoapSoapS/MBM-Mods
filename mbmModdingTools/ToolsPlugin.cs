@@ -15,7 +15,7 @@ namespace MbmModdingTools
             MODNAME = nameof(MbmModdingTools),
             AUTHOR = "SoapBoxHero",
             GUID = "com." + AUTHOR + "." + MODNAME,
-            VERSION = "1.0.0.0";
+            VERSION = "1.0.1.0";
 
         /// <summary>
         /// Mod log instance
@@ -26,6 +26,12 @@ namespace MbmModdingTools
         /// List of all female objects (includes store and npc)
         /// </summary>
         public static IDictionary<int, Female> Females = new Dictionary<int, Female>();
+
+        /// <summary>
+        /// Time since Dictionary was cleared.
+        /// </summary>
+        public static float ClearTimer = 0;
+        public const float MaxClearTimer = 10;
 
         /// <summary>
         /// The GameManager instance
@@ -79,7 +85,6 @@ namespace MbmModdingTools
         /// <summary>
         /// Run Periodic Actions
         /// </summary>
-        /// <param name="deltaTime"></param>
         [HarmonyPatch(typeof(PlayData), nameof(PlayData.Update))]
         [HarmonyPostfix]
         public static void OnUpdate(float deltaTime)
@@ -90,12 +95,30 @@ namespace MbmModdingTools
                 pag.timeSinceRun += deltaTime;
                 if(pag.timeSinceRun > pag.period)
                 {
-                    pag.Act();
+                    try
+                    {
+                        pag.Act();
+                    }
+                    catch
+                    {
+                        log?.LogError("Error in registered plugin");
+                    }
                     pag.timeSinceRun = 0;
                 }
             }
+
+            ClearTimer += deltaTime;
+            if (ClearTimer > MaxClearTimer)
+            {
+                ClearTimer = 0;
+                log.LogDebug(Females.Count);
+                Females.Clear();
+            }
         }
 
+        /// <summary>
+        /// Initialize logger.
+        /// </summary>
         public ToolsPlugin()
         {
             log = Log;

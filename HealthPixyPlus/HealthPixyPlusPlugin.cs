@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
@@ -7,17 +8,17 @@ using HarmonyLib.Tools;
 using MbmModdingTools;
 using MBMScripts;
 
-namespace PixyPlus
+namespace HealthPixyPlus
 {
     [BepInPlugin(GUID, MODNAME, VERSION)]
     [BepInDependency(ToolsPlugin.GUID)]
-    public class PixyPlusPlugin : BasePlugin
+    public class HealthPixyPlusPlugin : BasePlugin
     {
         public const string
-            MODNAME = nameof(PixyPlus),
+            MODNAME = nameof(HealthPixyPlus),
             AUTHOR = "SoapBoxHero",
             GUID = "com." + AUTHOR + "." + MODNAME,
-            VERSION = "1.0.0.0";
+            VERSION = "1.0.1.0";
 
         /// <summary>
         /// Mod log instance
@@ -50,6 +51,11 @@ namespace PixyPlus
         /// Stores return location for females to block them from returning before the mod sees them (Blocking).
         /// </summary>
         public static IDictionary<int, (int roomid, int seat)> restingReturnBlocks = new Dictionary<int, (int roomid, int seat)>();
+
+        /// <summary>
+        /// Dictionary of cage seats already allocated.
+        /// </summary>
+        public static IDictionary<int, (int roomid, int seat)> reservedRooms = new Dictionary<int, (int roomid, int seat)>();
 
         /// <summary>
         /// MaxHealth of girls injured to leave breeding room.
@@ -129,7 +135,7 @@ namespace PixyPlus
         /// </summary>
         public IList<Action<Female>> EnabledActions = new List<Action<Female>>();
 
-        public PixyPlusPlugin()
+        public HealthPixyPlusPlugin()
         {
             log = Log;
             config = new Config(Config);
@@ -144,6 +150,7 @@ namespace PixyPlus
                 EnabledActions.Add(RestIfAvailable);
                 EnabledActions.Add(UndoForcedRestAtIdle);
             }
+            EnabledActions.Add(ClearReservedRoom);
         }
 
         /// <summary>
@@ -156,7 +163,7 @@ namespace PixyPlus
                 Log.LogMessage("Starting Harmony Patch");
                 HarmonyFileLog.Enabled = true;
                 var harmony = new Harmony(GUID);
-                harmony.PatchAll(typeof(PixyPlusPlugin));
+                harmony.PatchAll(typeof(HealthPixyPlusPlugin));
 
                 Log.LogMessage("Harmony Patch Successful");
 
@@ -219,6 +226,9 @@ namespace PixyPlus
             return false;
         }
 
+        /// <summary>
+        /// Check if the unit specific pixy health is disabled.
+        /// </summary>
         public bool IsFemalePixyHealthDisabled(Female female)
         {
             if (!female.PixyHealth)
@@ -278,10 +288,9 @@ namespace PixyPlus
                     female.PreviousRoomIdStack.Push(target.room.UnitId);
                     female.PreviousSeatStack.Push(target.seat);
                     Log.LogDebug("Resting (from block return)");
-                    return;
                 }
 
-                if (female.PreviousRoomIdStack.Count == 0 || female.PreviousSeatStack.Count == 0)
+                else if (female.PreviousRoomIdStack.Count == 0 || female.PreviousSeatStack.Count == 0)
                 {
                     restingReturnOverrides.Add(female.UnitId, NoReturnTuple);
                     female.PreviousRoomIdStack.Push(target.room.UnitId);
@@ -290,15 +299,21 @@ namespace PixyPlus
                     return;
                 }
 
-                var prevRoomId = female.PreviousRoomIdStack.Pop();
-                var prevSeat = female.PreviousSeatStack.Pop();
-                restingReturnOverrides.Add(female.UnitId, (prevRoomId, prevSeat));
-                female.PreviousRoomIdStack.Push(target.room.UnitId);
-                female.PreviousSeatStack.Push(target.seat);
-                Log.LogDebug("Resting (from normal return)");
+                else
+                {
+                    var prevRoomId = female.PreviousRoomIdStack.Pop();
+                    var prevSeat = female.PreviousSeatStack.Pop();
+                    restingReturnOverrides.Add(female.UnitId, (prevRoomId, prevSeat));
+                    female.PreviousRoomIdStack.Push(target.room.UnitId);
+                    female.PreviousSeatStack.Push(target.seat);
+                    Log.LogDebug("Resting (from normal return)");
+                }
             }
         }
 
+        /// <summary>
+        /// Injure unit to trigger health pixy.
+        /// </summary>
         public void RestForcibly(Female female)
         {
             if (restingReturnOverrides.ContainsKey(female.UnitId) || stolenHealth.ContainsKey(female.UnitId))
@@ -317,6 +332,9 @@ namespace PixyPlus
             }
         }
 
+        /// <summary>
+        /// Restore unit health once in cage.
+        /// </summary>
         public void UndoForcedHealthReduction(Female female)
         {
             if (!stolenHealth.TryGetValue(female.UnitId, out var stolen))
@@ -364,13 +382,28 @@ namespace PixyPlus
         }
 
         /// <summary>
-        /// Only before load
+        /// Clear reserved room once unit is in cage.
+        /// </summary>
+        public static void ClearReservedRoom(Female female)
+        {
+            if (!reservedRooms.ContainsKey(female.UnitId))
+                return;
+
+            if (female.Room.RoomType != ERoomType.SlaveCage)
+                return;
+
+            reservedRooms.Remove(female.UnitId);
+        }
+
+        /// <summary>
+        /// Only before load save game
         /// </summary>
         public static void ClearState()
         {
             restingReturnBlocks.Clear();
             restingReturnOverrides.Clear();
             stolenHealth.Clear();
+            reservedRooms.Clear();
         }
 
         /// <summary>
@@ -380,6 +413,7 @@ namespace PixyPlus
         {
             restingReturnBlocks.Remove(id);
             restingReturnOverrides.Remove(id);
+            reservedRooms.Remove(id);
             if(!Females.TryGetValue(id, out var female))
                 stolenHealth.Remove(id);
 
@@ -391,6 +425,7 @@ namespace PixyPlus
 
             female.PreviousRoomIdStack.Clear();
             female.PreviousSeatStack.Clear();
+            female.m_PixyIsWaiting = false;
         }
 
         public static void ResetState()
@@ -404,6 +439,7 @@ namespace PixyPlus
             restingReturnBlocks.Clear();
             restingReturnOverrides.Clear();
             stolenHealth.Clear();
+            reservedRooms.Clear();
         }
 
         public static void ResetFemaleState(Female female)
@@ -429,6 +465,8 @@ namespace PixyPlus
                 female.Training = target.training;
                 stolenHealth.Remove(female.UnitId);
             }
+
+            reservedRooms.Remove(female.UnitId);
         }
 
         /// <summary>
@@ -444,11 +482,12 @@ namespace PixyPlus
             foreach (var room in rooms)
             {
                 if (room.m_AllocatableSeatCount == 0)
-                {
                     continue;
-                }
 
                 var seat = PD.GetEmptySeatInRoom(room.Sector, room.Slot);
+
+                if (reservedRooms.Any(res => res.Value.roomid == room.UnitId && res.Value.seat == seat))
+                    continue;
 
                 result = (room, seat);
                 return true;
