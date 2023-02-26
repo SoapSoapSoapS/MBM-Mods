@@ -30,3 +30,12 @@
 
 ### Dependency
 - MbmModdingTools.dll
+
+# AutoBuyCondomAndLoveGel
+
+### Features
+- This mod automatically buys condoms and/or lovegel
+- Highly configurable, check out the config in /bepinex/config/com.SoapBoxHero.AutoBuyCondomAndLoveGel
+
+### Dependency
+- MbmModdingTools.dll
