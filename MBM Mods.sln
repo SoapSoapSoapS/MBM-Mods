@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CureVenerialDisease", "Cure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MbmModdingTools", "mbmModdingTools\MbmModdingTools.csproj", "{1BAD7716-BF9E-418C-AD02-6FAD603FD086}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixyPlus", "PixyPlus\PixyPlus.csproj", "{70318B28-5EFC-44FB-BE2A-368662168D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoBuyCondomAndLoveGel", "AutoBuyCondomAndLoveGel\AutoBuyCondomAndLoveGel.csproj", "{8C6E75B8-A52E-4C29-8A2B-EBEFBEE04C28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoBuyCondomAndLoveGel", "AutoBuyCondomAndLoveGel\AutoBuyCondomAndLoveGel.csproj", "{8C6E75B8-A52E-4C29-8A2B-EBEFBEE04C28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthPixyPlus", "HealthPixyPlus\HealthPixyPlus.csproj", "{B8C8D092-B059-4D9E-9543-BAC8D6FC20ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless", "Restless\Restless.csproj", "{AE8FD2D7-3420-4E33-B5E8-6980C349212B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstatePixy", "EstatePixy\EstatePixy.csproj", "{F07C21AB-347E-44E9-A588-B12FFBC7D349}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +29,22 @@ Global
 		{1BAD7716-BF9E-418C-AD02-6FAD603FD086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BAD7716-BF9E-418C-AD02-6FAD603FD086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BAD7716-BF9E-418C-AD02-6FAD603FD086}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70318B28-5EFC-44FB-BE2A-368662168D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70318B28-5EFC-44FB-BE2A-368662168D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70318B28-5EFC-44FB-BE2A-368662168D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70318B28-5EFC-44FB-BE2A-368662168D1C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C6E75B8-A52E-4C29-8A2B-EBEFBEE04C28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C6E75B8-A52E-4C29-8A2B-EBEFBEE04C28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C6E75B8-A52E-4C29-8A2B-EBEFBEE04C28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C6E75B8-A52E-4C29-8A2B-EBEFBEE04C28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8C8D092-B059-4D9E-9543-BAC8D6FC20ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8C8D092-B059-4D9E-9543-BAC8D6FC20ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8C8D092-B059-4D9E-9543-BAC8D6FC20ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8C8D092-B059-4D9E-9543-BAC8D6FC20ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE8FD2D7-3420-4E33-B5E8-6980C349212B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE8FD2D7-3420-4E33-B5E8-6980C349212B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE8FD2D7-3420-4E33-B5E8-6980C349212B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE8FD2D7-3420-4E33-B5E8-6980C349212B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F07C21AB-347E-44E9-A588-B12FFBC7D349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F07C21AB-347E-44E9-A588-B12FFBC7D349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F07C21AB-347E-44E9-A588-B12FFBC7D349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F07C21AB-347E-44E9-A588-B12FFBC7D349}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

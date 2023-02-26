@@ -8,17 +8,17 @@ using HarmonyLib.Tools;
 using MbmModdingTools;
 using MBMScripts;
 
-namespace PixyPlus
+namespace HealthPixyPlus
 {
     [BepInPlugin(GUID, MODNAME, VERSION)]
     [BepInDependency(ToolsPlugin.GUID)]
-    public class PixyPlusPlugin : BasePlugin
+    public class HealthPixyPlusPlugin : BasePlugin
     {
         public const string
-            MODNAME = nameof(PixyPlus),
+            MODNAME = nameof(HealthPixyPlus),
             AUTHOR = "SoapBoxHero",
             GUID = "com." + AUTHOR + "." + MODNAME,
-            VERSION = "1.0.0.0";
+            VERSION = "1.0.1.0";
 
         /// <summary>
         /// Mod log instance
@@ -135,7 +135,7 @@ namespace PixyPlus
         /// </summary>
         public IList<Action<Female>> EnabledActions = new List<Action<Female>>();
 
-        public PixyPlusPlugin()
+        public HealthPixyPlusPlugin()
         {
             log = Log;
             config = new Config(Config);
@@ -163,7 +163,7 @@ namespace PixyPlus
                 Log.LogMessage("Starting Harmony Patch");
                 HarmonyFileLog.Enabled = true;
                 var harmony = new Harmony(GUID);
-                harmony.PatchAll(typeof(PixyPlusPlugin));
+                harmony.PatchAll(typeof(HealthPixyPlusPlugin));
 
                 Log.LogMessage("Harmony Patch Successful");
 
