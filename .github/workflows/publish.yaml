@@ -26,17 +26,11 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          tag=$(git describe --tags --abbrev=0)
-          release_name="MBM-Mods-$tag-${{ matrix.target }}"
           # Build everything
-          dotnet publish MBM-Mods.sln -c Release -o release_name
-          # Pack files
-          mv "./${release_name}/SSS*.dll" ./
-          # Delete output directory
-          rm -r "$release_name"
+          dotnet publish MBM-Mods.sln -c Release
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "*"
+          files: "./Out/*.dll"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
