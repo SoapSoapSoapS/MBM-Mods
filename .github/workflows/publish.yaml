@@ -32,7 +32,7 @@ jobs:
           dotnet publish MBM-Mods.sln -c Release -o $release_name
           # Pack files
           ls
-          mv "./MBM-Mods/Out/SSS*.dll" ./
+          mv Out/*.dll ./
           # Delete output directory
           rm -r "$release_name"
       - name: Publish
