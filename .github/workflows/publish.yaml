@@ -29,9 +29,9 @@ jobs:
           tag=$(git describe --tags --abbrev=0)
           release_name="MBM-Mods-$tag-${{ matrix.target }}"
           # Build everything
-          dotnet publish MBM-Mods.sln -c Release -o release_name
+          dotnet publish MBM-Mods.sln -c Release -o $release_name
           # Pack files
-          mv "./${release_name}/SSS*.dll" ./
+          mv "./$release_name/SSS*.dll" ./
           # Delete output directory
           rm -r "$release_name"
       - name: Publish
