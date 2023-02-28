@@ -17,11 +17,6 @@ public static class PeriodicActionRunner {
     private static IList<CustomAction> OnLoadActions = new List<CustomAction>();
 
     /// <summary>
-    /// Actions to run against the GameManager instance on init
-    /// </summary>
-    private static IList<CustomAction> OnInitActions = new List<CustomAction>();
-
-    /// <summary>
     /// Registers an action to run approximatley every "period" seconds.
     /// </summary>
     public static CustomAction RegisterPeriodicAction(float period, Action act)
@@ -51,29 +46,11 @@ public static class PeriodicActionRunner {
     }
 
     /// <summary>
-    /// Add a new action to run against the GameManager instance on load
-    /// </summary>
-    public static CustomAction RegisterOnInitAction(Action action)
-    {
-        var customAction = new CustomAction(action);
-        OnInitActions.Add(customAction);
-        return customAction;
-    }
-
-    /// <summary>
     /// Remove a registered onLoad action
     /// </summary>
     public static bool DeregisterOnLoadAction(CustomAction action)
     {
         return OnLoadActions.Remove(action);
-    }
-
-    /// <summary>
-    /// Remove a registered onLoad action
-    /// </summary>
-    public static bool DeregisterOnInitAction(CustomAction action)
-    {
-        return OnInitActions.Remove(action);
     }
 
     /// <summary>
@@ -110,25 +87,7 @@ public static class PeriodicActionRunner {
     [HarmonyPostfix]
     public static void OnLoad(GameManager __instance)
     {
-        SharedData.GM ??= __instance;
-
         foreach (var action in OnLoadActions)
-        {
-            action.act();
-        }
-    }
-
-    /// <summary>
-    /// Collect GameManager instance on new game
-    /// </summary>
-    /// <param name="__instance"></param>
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.Initialize))]
-    [HarmonyPostfix]
-    public static void OnInit(GameManager __instance)
-    {
-        SharedData.GM ??= __instance;
-
-        foreach (var action in OnInitActions)
         {
             action.act();
         }

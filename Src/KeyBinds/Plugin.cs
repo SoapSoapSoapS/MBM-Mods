@@ -2,13 +2,11 @@
 using BepInEx.Unity.Mono;
 using HarmonyLib;
 using HarmonyLib.Tools;
-using MBMScripts;
-using Tools;
-using UnityEngine;
 
 namespace KeyBinds;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+[BepInDependency(Tools.MyPluginInfo.PLUGIN_GUID, Tools.MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
     /// <summary>

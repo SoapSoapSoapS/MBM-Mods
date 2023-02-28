@@ -37,7 +37,7 @@ public class Plugin : BaseUnityPlugin
             DefaultValue = 5
         });
 
-        Tools.PeriodicActionRunner.RegisterOnInitAction(SetRestTime);
+        Tools.PeriodicActionRunner.RegisterPeriodicAction(60, SetRestTime);
 
         RestTime.SettingChanged += OnRestTimeChanged;
     }
