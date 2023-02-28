@@ -1,12 +1,15 @@
 ﻿using BepInEx;
 using BepInEx.Unity.Mono;
 using BepInEx.Configuration;
-using HarmonyLib;
+using System;
 using MBMScripts;
+using HarmonyLib;
+using Tools;
 
 namespace Restless;
 
-[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+[BepInDependency(Tools.MyPluginInfo.PLUGIN_GUID, Tools.MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
     /// <summary>
@@ -17,7 +20,7 @@ public class Plugin : BaseUnityPlugin
     /// <summary>
     /// Rest time.
     /// </summary>
-    public ConfigEntry<float> RestTime;
+    public static ConfigEntry<float>? RestTime;
     
     /// <summary>
     /// Initialize logger.
@@ -33,12 +36,29 @@ public class Plugin : BaseUnityPlugin
             AcceptableValues = new AcceptableValueRange<float>(1f, 64f),
             DefaultValue = 5
         });
+
+        Tools.PeriodicActionRunner.RegisterOnInitAction(SetRestTime);
+
+        RestTime.SettingChanged += OnRestTimeChanged;
+    }
+
+    private static void OnRestTimeChanged(object sender, EventArgs e)
+    {
+        SetRestTime();
+    }
+
+    private static void SetRestTime()
+    {
+        if(GameManager.ConfigData == null) return;
+        if(RestTime == null) return;
+        log?.LogMessage("SetRestTime");
+        Traverse.Create(GameManager.ConfigData).Field("m_RestTime").SetValue(RestTime.Value);
     }
 
     private void Awake()
     {
         // Plugin startup logic
-        Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
     }
     
 }

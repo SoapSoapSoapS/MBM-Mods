@@ -1,6 +1,8 @@
 using BepInEx.Configuration;
 
- public struct ConfigInfo<T>
+namespace Tools;
+
+public struct ConfigInfo<T>
 {
     public string Section;
     public string Name;

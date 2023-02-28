@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "SoapSoapSoapS",
+  "classifications": ["BepInEx", "BepInEx 6"],
+  "identity": "sss.template.mbmPlugin",
+  "name": "BepInEx 6 New Plugin for MonsterBlackMarket",
+  "shortName": "sssmod",
+  "sourceName": "Boilerplate",
+  "preferNameDirectory": true,
+  "symbols": {
+    "GUID": {
+      "type": "parameter",
+      "defaultValue": "sss.plugins.boilerplate",
+      "replaces": "sss.plugins.boilerplate"
+    }
+  }
+}
