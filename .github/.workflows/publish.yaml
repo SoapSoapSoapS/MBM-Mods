@@ -1,0 +1,42 @@
+name: Publish
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Release
+    strategy:
+      matrix:
+        kind: ['windows']
+        include:
+          - kind: windows
+            os: windows-latest
+            target: win-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.100
+
+      - name: Build
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          release_name="MBM-Mods-$tag-${{ matrix.target }}"
+          # Build everything
+          dotnet publish MBM-Mods.sln -c Release -o release_name
+          # Pack files
+          mv "./${release_name}/SSS*.dll" ./
+          # Delete output directory
+          rm -r "$release_name"
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
