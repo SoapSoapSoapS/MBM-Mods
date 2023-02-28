@@ -31,7 +31,8 @@ jobs:
           # Build everything
           dotnet publish MBM-Mods.sln -c Release -o $release_name
           # Pack files
-          mv "./Out/SSS*.dll" ./
+          ls
+          mv "./MBM-Mods/Out/SSS*.dll" ./
           # Delete output directory
           rm -r "$release_name"
       - name: Publish
