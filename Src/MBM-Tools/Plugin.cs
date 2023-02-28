@@ -31,7 +31,6 @@ public class Plugin : BaseUnityPlugin
             Logger.LogMessage("Starting Harmony Patch");
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-            harmony.PatchAll(typeof(SharedData));
             harmony.PatchAll(typeof(PeriodicActionRunner));
 
             Logger.LogMessage("Harmony Patch Successful");

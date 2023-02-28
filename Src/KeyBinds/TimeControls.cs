@@ -1,5 +1,6 @@
 using System;
 using BepInEx.Configuration;
+using MBMScripts;
 using Tools;
 using UnityEngine;
 
@@ -90,9 +91,7 @@ public static class TimeControls
     private static Action SetSpeed(float f)
     {
         return () => {
-            if(Tools.SharedData.GM == null) return;
-
-            Tools.SharedData.GM.GameSpeed = f;
+            GameManager.Instance.GameSpeed = f;
         };
     }
 

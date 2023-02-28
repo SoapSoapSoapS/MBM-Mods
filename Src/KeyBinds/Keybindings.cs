@@ -41,9 +41,7 @@ public static class Keybindings {
     [HarmonyPostfix]
     public static void OnUpdate()
     {
-        if(Tools.SharedData.GM == null) return;
-
-        var areMenusOpen = gameWindows.Where(w => !expectedGameWindows.Contains(w)).Any(w => Tools.SharedData.GM.GetWindowState(w));
+        var areMenusOpen = gameWindows.Where(w => !expectedGameWindows.Contains(w)).Any(w => GameManager.Instance.GetWindowState(w));
         if(areMenusOpen) return;
 
         foreach(var kvp in bindings)
