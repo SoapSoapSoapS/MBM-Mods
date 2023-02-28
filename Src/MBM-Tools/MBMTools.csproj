@@ -21,10 +21,14 @@
     <PackageReference Include="BepInEx.Unity.Mono" Version="6.0.0-be.*" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
 	  <PackageReference Include="UnityEngine.Modules" Version="2020.3.37" IncludeAssets="compile" />
-    <Reference Include="$(SolutionDir)/.sources/Managed/Assembly-CSharp.dll" />
+    <Reference Include="$(SolutionDir)/Managed/Assembly-CSharp.dll" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="pwsh -Command &quot;&amp; { $(SolutionDir)\Build\postBuild.ps1 $(SolutionDir) $(TargetDir) $(TargetFileName) }&quot;" />
+  </Target>
 </Project>

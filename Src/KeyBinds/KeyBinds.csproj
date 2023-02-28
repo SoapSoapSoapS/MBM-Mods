@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Boilerplate</RootNamespace>
-    <AssemblyName>sss.plugins.boilerplate</AssemblyName>
-    <Product>Boilerplate</Product>
+    <RootNamespace>KeyBinds</RootNamespace>
+    <AssemblyName>sss.plugins.keybinds</AssemblyName>
+    <Product>KeyBinds</Product>
     <Version>0.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -26,4 +26,8 @@
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="pwsh -Command &quot;&amp; { $(SolutionDir)\Build\postBuild.ps1 $(SolutionDir) $(TargetDir) $(TargetFileName) }&quot;" />
+  </Target>
 </Project>
