@@ -11,27 +11,27 @@ public static class TimeControls
     /// <summary>
     /// Speed 1.5x
     /// </summary>
-    public static ConfigEntry<KeyCode> Speed1_5;
+    public static ConfigEntry<KeyCode>? Speed1_5;
 
     /// <summary>
     /// Speed 1.5x
     /// </summary>
-    public static ConfigEntry<KeyCode> Speed2;
+    public static ConfigEntry<KeyCode>? Speed2;
 
     /// <summary>
     /// Speed 1.5x
     /// </summary>
-    public static ConfigEntry<KeyCode> Speed3;
+    public static ConfigEntry<KeyCode>? Speed3;
 
     /// <summary>
     /// Speed 1.5x
     /// </summary>
-    public static ConfigEntry<KeyCode> Speed4;
+    public static ConfigEntry<KeyCode>? Speed4;
 
     /// <summary>
     /// Speed 1.5x
     /// </summary>
-    public static ConfigEntry<KeyCode> Speed5;
+    public static ConfigEntry<KeyCode>? Speed5;
 
     public static void Initialize(ConfigFile config)
     {

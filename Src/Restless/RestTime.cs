@@ -10,12 +10,12 @@ public static class RestTime
     /// <summary>
     /// Rest time.
     /// </summary>
-    public static ConfigEntry<bool> EnableRestTime;
+    public static ConfigEntry<bool>? EnableRestTime;
 
     /// <summary>
     /// Rest time.
     /// </summary>
-    public static ConfigEntry<float> Seconds;
+    public static ConfigEntry<float>? Seconds;
 
     public static void Initialize(ConfigFile config)
     {
@@ -45,6 +45,8 @@ public static class RestTime
     [HarmonyPostfix]
     public static void OverrideRestTime(ref float __result)
     {
+        if(EnableRestTime == null || Seconds == null) return;
+
         if(EnableRestTime.Value)
         {
             __result = Seconds.Value;
