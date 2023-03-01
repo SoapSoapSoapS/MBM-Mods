@@ -5,7 +5,7 @@
     <RootNamespace>Tools</RootNamespace>
     <AssemblyName>sss.plugins.mbmtools</AssemblyName>
     <Product>MBMTools</Product>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>

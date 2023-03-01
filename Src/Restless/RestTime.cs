@@ -5,7 +5,7 @@ using Tools;
 
 namespace Restless;
 
-public class RestTime
+public static class RestTime
 {
     /// <summary>
     /// Rest time.
@@ -17,7 +17,7 @@ public class RestTime
     /// </summary>
     public static ConfigEntry<float> Seconds;
 
-    public RestTime(ConfigFile config)
+    public static void Initialize(ConfigFile config)
     {
         Seconds = config.Bind(new ConfigInfo<float>()
         {

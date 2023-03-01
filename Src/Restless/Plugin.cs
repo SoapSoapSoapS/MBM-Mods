@@ -1,10 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Unity.Mono;
-using BepInEx.Configuration;
-using System;
-using MBMScripts;
 using HarmonyLib;
-using Tools;
 using HarmonyLib.Tools;
 
 namespace Restless;
@@ -25,6 +21,7 @@ public class Plugin : BaseUnityPlugin
     {
         log = Logger;
         
+        RestTime.Initialize(Config);
     }
 
     private void Awake()

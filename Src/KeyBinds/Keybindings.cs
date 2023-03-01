@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using MBMScripts;
 using UnityEngine;
 
@@ -10,14 +9,15 @@ namespace KeyBinds;
 public static class Keybindings {
     private static IDictionary<Guid, (KeyCode key, Action act)> bindings = new Dictionary<Guid, (KeyCode, Action)>();
 
-    private static EGameWindow[] gameWindows = (EGameWindow[]) Enum.GetValues(typeof(EGameWindow));
-
-    private static EGameWindow[] expectedGameWindows = new EGameWindow[]
+    private static EGameWindow[] menuWindows = new EGameWindow[]
     {
-        EGameWindow.Top,
-        EGameWindow.Clock,
-        EGameWindow.Bottom,
-        EGameWindow.PayList
+        EGameWindow.Title,
+        EGameWindow.Menu,
+        EGameWindow.MenuSave,
+        EGameWindow.MenuLoad,
+        EGameWindow.MenuSound,
+        EGameWindow.MenuHotKey,
+        EGameWindow.MenuCode,
     };
 
     public static Guid RegisterKeybinding(KeyCode key, Action act)
@@ -37,11 +37,9 @@ public static class Keybindings {
         bindings.Remove(guid);
     }
 
-    [HarmonyPatch(typeof(PlayData), nameof(PlayData.Update))]
-    [HarmonyPostfix]
     public static void OnUpdate()
     {
-        var areMenusOpen = gameWindows.Where(w => !expectedGameWindows.Contains(w)).Any(w => GameManager.Instance.GetWindowState(w));
+        var areMenusOpen = menuWindows.Any(w => GameManager.Instance.GetWindowState(w));
         if(areMenusOpen) return;
 
         foreach(var kvp in bindings)
