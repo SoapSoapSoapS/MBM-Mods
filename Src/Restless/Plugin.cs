@@ -1,10 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Unity.Mono;
-using BepInEx.Configuration;
-using System;
-using MBMScripts;
 using HarmonyLib;
-using Tools;
 using HarmonyLib.Tools;
 
 namespace Restless;
@@ -25,6 +21,8 @@ public class Plugin : BaseUnityPlugin
     {
         log = Logger;
         
+        RestTime.Initialize(Config);
+        DragInStoppedTime.Initialize(Config);
     }
 
     private void Awake()
@@ -34,8 +32,8 @@ public class Plugin : BaseUnityPlugin
             Logger.LogMessage("Starting Harmony Patch");
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-            harmony.PatchAll(typeof(DragInStoppedTime));
             harmony.PatchAll(typeof(RestTime));
+            harmony.PatchAll(typeof(DragInStoppedTime));
 
             Logger.LogMessage("Harmony Patch Successful");
         }

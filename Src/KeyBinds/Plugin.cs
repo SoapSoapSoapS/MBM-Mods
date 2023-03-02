@@ -1,7 +1,5 @@
 ﻿using BepInEx;
 using BepInEx.Unity.Mono;
-using HarmonyLib;
-using HarmonyLib.Tools;
 
 namespace KeyBinds;
 
@@ -22,22 +20,5 @@ public class Plugin : BaseUnityPlugin
         log = Logger;
 
         TimeControls.Initialize(Config);
-    }
-
-    private void Awake()
-    {
-        try
-        {
-            Logger.LogMessage("Starting Harmony Patch");
-            HarmonyFileLog.Enabled = true;
-            var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-            harmony.PatchAll(typeof(Keybindings));
-
-            Logger.LogMessage("Harmony Patch Successful");
-        }
-        catch
-        {
-            Logger.LogWarning("Harmony Patch Failed");
-        }
     }
 }

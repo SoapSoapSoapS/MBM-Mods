@@ -5,34 +5,37 @@ using Tools;
 
 namespace Restless;
 
-public class RestTime
+public static class RestTime
 {
     /// <summary>
-    /// Rest time.
+    /// Rest time in seconds.
     /// </summary>
-    public static ConfigEntry<bool> EnableRestTime;
+    public static ConfigEntry<float>? Seconds;
 
     /// <summary>
-    /// Rest time.
+    /// If true, override default rest time.
     /// </summary>
-    public static ConfigEntry<float> Seconds;
+    public static ConfigEntry<bool>? Enable;
 
-    public RestTime(ConfigFile config)
+    /// <summary>
+    /// Initialize settings from config.
+    /// </summary>
+    public static void Initialize(ConfigFile config)
     {
         Seconds = config.Bind(new ConfigInfo<float>()
         {
-            Section = "RestTime",
-            Name = "Seconds",
-            Description = "The time in seconds that a unit will rest before starting a new activity",
+            Section = nameof(RestTime),
+            Name = nameof(Seconds),
+            Description = "The time in seconds that a unit will rest before starting a new activity.",
             AcceptableValues = new AcceptableValueRange<float>(1f, 64f),
             DefaultValue = 15
         });
 
-        EnableRestTime = config.Bind(new ConfigInfo<bool>()
+        Enable = config.Bind(new ConfigInfo<bool>()
         {
-            Section = "RestTime",
-            Name = "Enabled",
-            Description = "Whether to override the default value",
+            Section = nameof(RestTime),
+            Name = nameof(Enable),
+            Description = "Allow custom RestTime.",
             DefaultValue = false
         });
     }
@@ -45,7 +48,9 @@ public class RestTime
     [HarmonyPostfix]
     public static void OverrideRestTime(ref float __result)
     {
-        if(EnableRestTime.Value)
+        if(Enable == null || Seconds == null) return;
+
+        if(Enable.Value)
         {
             __result = Seconds.Value;
         }

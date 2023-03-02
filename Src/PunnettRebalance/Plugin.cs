@@ -3,9 +3,10 @@ using BepInEx.Unity.Mono;
 using HarmonyLib;
 using HarmonyLib.Tools;
 
-namespace Tools;
+namespace PunnettRebalance;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+[BepInDependency(Tools.MyPluginInfo.PLUGIN_GUID, Tools.MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
     /// <summary>
@@ -19,11 +20,10 @@ public class Plugin : BaseUnityPlugin
     public Plugin()
     {
         log = Logger;
-    }
 
-    /// <summary>
-    /// Patch and start plugin.
-    /// </summary>
+        PunnettInheritance.Initialize(Config);
+    }
+    
     private void Awake()
     {
         try
@@ -31,8 +31,7 @@ public class Plugin : BaseUnityPlugin
             Logger.LogMessage("Starting Harmony Patch");
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-            harmony.PatchAll(typeof(PeriodicActionRunner));
-            harmony.PatchAll(typeof(Keybindings));
+            harmony.PatchAll(typeof(PunnettInheritance));
 
             Logger.LogMessage("Harmony Patch Successful");
         }
@@ -40,9 +39,5 @@ public class Plugin : BaseUnityPlugin
         {
             Logger.LogWarning("Harmony Patch Failed");
         }
-    }
-
-    public void Update() {
-        Keybindings.OnUpdate();
     }
 }
