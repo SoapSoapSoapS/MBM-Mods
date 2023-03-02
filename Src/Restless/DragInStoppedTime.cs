@@ -1,10 +1,28 @@
+using BepInEx.Configuration;
 using HarmonyLib;
 using MBMScripts;
+using Tools;
 
 namespace Restless;
 
 public static class DragInStoppedTime
 {
+    /// <summary>
+    /// Rest time.
+    /// </summary>
+    public static ConfigEntry<bool>? Enable;
+
+    public static void Initialize(ConfigFile config)
+    {
+        Enable = config.Bind(new ConfigInfo<bool>()
+        {
+            Section = nameof(DragInStoppedTime),
+            Name = nameof(Enable),
+            Description = "Allows dragging units in stopped time.",
+            DefaultValue = false
+        });
+    }
+
     /// <summary>
     /// Trick drag event into thinking gamespeed is zero
     /// </summary>
@@ -24,6 +42,9 @@ public static class DragInStoppedTime
     [HarmonyPostfix]
     public static void PostDrag(GameManager __instance)
     {
+        if(Enable == null) return;
+        if(!Enable.Value) return;
+
         GameManager.Instance.GameSpeedIsZero = true;
     }
 }

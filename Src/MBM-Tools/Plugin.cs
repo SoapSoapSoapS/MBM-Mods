@@ -32,6 +32,7 @@ public class Plugin : BaseUnityPlugin
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
             harmony.PatchAll(typeof(PeriodicActionRunner));
+            harmony.PatchAll(typeof(Keybindings));
 
             Logger.LogMessage("Harmony Patch Successful");
         }
@@ -39,5 +40,9 @@ public class Plugin : BaseUnityPlugin
         {
             Logger.LogWarning("Harmony Patch Failed");
         }
+    }
+
+    public void Update() {
+        Keybindings.OnUpdate();
     }
 }

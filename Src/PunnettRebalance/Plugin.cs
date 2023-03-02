@@ -6,6 +6,7 @@ using HarmonyLib.Tools;
 namespace PunnettRebalance;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+[BepInDependency(Tools.MyPluginInfo.PLUGIN_GUID, Tools.MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
     /// <summary>
@@ -19,6 +20,8 @@ public class Plugin : BaseUnityPlugin
     public Plugin()
     {
         log = Logger;
+
+        PunnettInheritance.Initialize(Config);
     }
     
     private void Awake()
@@ -28,7 +31,7 @@ public class Plugin : BaseUnityPlugin
             Logger.LogMessage("Starting Harmony Patch");
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-            harmony.PatchAll(typeof(InitializeTrait));
+            harmony.PatchAll(typeof(PunnettInheritance));
 
             Logger.LogMessage("Harmony Patch Successful");
         }

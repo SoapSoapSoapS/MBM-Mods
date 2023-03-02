@@ -22,6 +22,7 @@ public class Plugin : BaseUnityPlugin
         log = Logger;
         
         RestTime.Initialize(Config);
+        DragInStoppedTime.Initialize(Config);
     }
 
     private void Awake()
@@ -31,8 +32,8 @@ public class Plugin : BaseUnityPlugin
             Logger.LogMessage("Starting Harmony Patch");
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
-            harmony.PatchAll(typeof(DragInStoppedTime));
             harmony.PatchAll(typeof(RestTime));
+            harmony.PatchAll(typeof(DragInStoppedTime));
 
             Logger.LogMessage("Harmony Patch Successful");
         }

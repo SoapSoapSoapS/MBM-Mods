@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.Configuration;
 using HarmonyLib;
 using MBMScripts;
+using Tools;
 using Random = UnityEngine.Random;
 
 namespace PunnettRebalance;
@@ -13,20 +15,39 @@ namespace PunnettRebalance;
  * require UI to update.
 */
 
-public static class InitializeTrait
+public static class PunnettInheritance
 {
-    private static ETrait[] TraitArray = (ETrait[]) Enum.GetValues(typeof(ETrait));
+    /// <summary>
+    /// Rest time.
+    /// </summary>
+    public static ConfigEntry<bool>? Enable;
 
-    [HarmonyPatch(typeof(Character), nameof(Character.InitializeTrait))]
-    [HarmonyPrefix]
-    public static bool OverrideInitializeTrait(Character female, Character male, ref string __result, Character __instance)
+    public static void Initialize(ConfigFile config)
     {
+        Enable = config.Bind(new ConfigInfo<bool>()
+        {
+            Section = nameof(PunnettInheritance),
+            Name = nameof(Enable),
+            Description = "Allows 50/50 genetic inheritance",
+            DefaultValue = true
+        });
+    }
+    
+    private static ETrait[] TraitArray = (ETrait[])Enum.GetValues(typeof(ETrait));
+
+    [HarmonyPatch(typeof(Character), nameof(Character.InitializeTrait), new[] { typeof(Character), typeof(Character) })]
+    [HarmonyPrefix]
+    public static bool OverrideInitializeTrait(Character female, Character male, Character __instance)
+    {
+        if(Enable == null) return true;
+        if(!Enable.Value) return true;
+
         Plugin.log?.LogMessage("Begin Custom genetic Sequencing");
 
         var f = Traverse.Create(female);
         var m = Traverse.Create(male);
         var ins = Traverse.Create(__instance);
-        
+
         var f_RaceTraitList = f.Field("m_RaceTraitList").GetValue<List<ETrait>>();
         var m_RaceTraitList = m.Field("m_RaceTraitList").GetValue<List<ETrait>>();
         var f_TraitInfoDictionary = f.Property("TraitInfoDictionary").GetValue<SeqDictionary<ETrait, TraitInfo>>();
@@ -57,7 +78,7 @@ public static class InitializeTrait
         {
             __instance.AddRaceTrait(trait2);
         }
-        IL_86:
+    IL_86:
 
         /* --- Inherit non-racial traits --- */
         /* --- CUSTOM CODE --- */
@@ -65,36 +86,37 @@ public static class InitializeTrait
 
         var traitCandidates = TraitArray
             .Where(t => f_TraitInfoDictionary.ContainsKey(t) || m_TraitInfoDictionary.ContainsKey(t))
-            .Select(etrait => {
-                f_TraitInfoDictionary.TryGetValue(etrait, out var motherTrait);
-                m_TraitInfoDictionary.TryGetValue(etrait, out var fatherTrait);
+            .Select(etrait =>
+            {
+                f_TraitInfoDictionary.TryGet(etrait, out var motherTrait);
+                m_TraitInfoDictionary.TryGet(etrait, out var fatherTrait);
                 return (etrait, motherTrait, fatherTrait);
             });
 
         // Trait: superior genetics, select best genes only
         if (female.TraitContains(ETrait.Trait67))
         {
-            foreach(var (etrait, motherTrait, fatherTrait) in traitCandidates)
+            foreach (var (etrait, motherTrait, fatherTrait) in traitCandidates)
             {
-                TraitData traitMetaData = Database<TraitData>.GetDataByDataId((int) etrait);
-                if(traitMetaData.IsPositive)
+                TraitData traitMetaData = Database<TraitData>.GetDataByDataId((int)etrait);
+                if (traitMetaData.IsPositive)
                 {
-                    if(motherTrait.Value > 0f && motherTrait.Value > fatherTrait.Value)
+                    if (motherTrait.Trait != ETrait.None && motherTrait.Value > 0f && motherTrait.Value > fatherTrait.Value)
                     {
                         childTraits.Add((etrait, motherTrait.Value));
                     }
-                    else if(fatherTrait.Value > 0f)
+                    else if (fatherTrait.Trait != ETrait.None && fatherTrait.Value > 0f)
                     {
                         childTraits.Add((etrait, fatherTrait.Value));
                     }
                 }
                 else
                 {
-                    if(motherTrait.Value < 0f && motherTrait.Value < fatherTrait.Value)
+                    if (motherTrait.Trait != ETrait.None && motherTrait.Value < 0f && motherTrait.Value < fatherTrait.Value)
                     {
                         childTraits.Add((etrait, motherTrait.Value));
                     }
-                    else if(fatherTrait.Value < 0f)
+                    else if (fatherTrait.Trait != ETrait.None && fatherTrait.Value < 0f)
                     {
                         childTraits.Add((etrait, fatherTrait.Value));
                     }
@@ -104,11 +126,13 @@ public static class InitializeTrait
         // 50/50 for all traits
         else
         {
-            foreach(var (etrait, motherTrait, fatherTrait) in traitCandidates)
+            foreach (var (etrait, motherTrait, fatherTrait) in traitCandidates)
             {
-                var selectedTrait = Random.Range(0f, 100f) < 50f ? motherTrait : fatherTrait;
+                var r = Random.Range(0f, 100f);
+                var selectedTrait = r < 50f ? motherTrait : fatherTrait;
+                Plugin.log?.LogMessage(r);
 
-                if(etrait == selectedTrait.Trait)
+                if (selectedTrait.Trait != ETrait.None)
                 {
                     childTraits.Add((etrait, selectedTrait.Value));
                 }
@@ -116,7 +140,7 @@ public static class InitializeTrait
         }
 
         // Add selected traits to child
-        foreach(var (eTrait, value) in childTraits)
+        foreach (var (eTrait, value) in childTraits)
         {
             __instance.AddTrait(eTrait);
             __instance.AddTraitValue(eTrait, value);
@@ -133,30 +157,30 @@ public static class InitializeTrait
             float traitValue = __instance.GetTraitValue(trait3);
             switch (trait3)
             {
-            case ETrait.Trait93:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseConceptionRate));
-                break;
-            case ETrait.Trait94:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseGrowthTime));
-                break;
-            case ETrait.Trait95:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseFoodConsumption));
-                break;
-            case ETrait.Trait96:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseHealth));
-                break;
-            case ETrait.Trait97:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseBirthCount));
-                break;
-            case ETrait.Trait98:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseMultiplePregnancyCount));
-                break;
-            case ETrait.Trait99:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseSexTime));
-                break;
-            case ETrait.Trait100:
-                __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseDecreasingMentalityOnSex));
-                break;
+                case ETrait.Trait93:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseConceptionRate));
+                    break;
+                case ETrait.Trait94:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseGrowthTime));
+                    break;
+                case ETrait.Trait95:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseFoodConsumption));
+                    break;
+                case ETrait.Trait96:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseHealth));
+                    break;
+                case ETrait.Trait97:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseBirthCount));
+                    break;
+                case ETrait.Trait98:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue + (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseMultiplePregnancyCount));
+                    break;
+                case ETrait.Trait99:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseSexTime));
+                    break;
+                case ETrait.Trait100:
+                    __instance.AddTraitValue(trait3, (float)((decimal)traitValue - (decimal)GameManager.ConfigData.MinIncreaseOrDecreaseDecreasingMentalityOnSex));
+                    break;
             }
         }
         /* --- Trait: rare genetic reversal, one of the inherited negative traits may be flipped to a positive trait of equal value --- */
@@ -186,4 +210,20 @@ public static class InitializeTrait
         __instance.SortTrait();
         return false;
     }
+
+    private static bool TryGet(this SeqDictionary<ETrait, TraitInfo> self, ETrait key, out TraitInfo value)
+    {
+        if(self.ContainsKey(key))
+        {
+            value = self[key];
+            return true;
+        }
+
+        value = new TraitInfo();
+        value.Trait = ETrait.None;
+        value.Value = 0f;
+        value.UpgradedValue = 0f;
+        return false;
+    }
 }
+

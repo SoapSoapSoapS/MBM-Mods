@@ -4,7 +4,7 @@ using System.Linq;
 using MBMScripts;
 using UnityEngine;
 
-namespace KeyBinds;
+namespace Tools;
 
 public static class Keybindings {
     private static IDictionary<Guid, (KeyCode key, Action act)> bindings = new Dictionary<Guid, (KeyCode, Action)>();
@@ -46,7 +46,6 @@ public static class Keybindings {
         {
             if(Input.GetKeyUp(kvp.Value.key))
             {
-                Plugin.log?.LogMessage("KeyPress");
                 kvp.Value.act();
             }
         }
