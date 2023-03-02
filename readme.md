@@ -5,7 +5,7 @@
 1. Backup your game files.
 1. Install bepinex [6.0.0-pre.1](https://github.com/BepInEx/BepInEx/releases/tag/v6.0.0-pre.1)
 1. (Optional) Download [Configmanager UI](https://github.com/SoapSoapSoapS/BepInEx.ConfigurationManager6.Core/releases/tag/v1.0) to change settings in game.
-1. Download the plugins you want to use + the tools plugin (the tools plugin is required for the others to work).
+1. [Download the plugins](https://github.com/SoapSoapSoapS/MBM-Mods/releases/latest) you want to use + the tools plugin (the tools plugin is required for the others to work).
 1. Add the .dll files you just downloaded to `<YourGameFolder>/BepInEx/Plugins`
 1. Run the game.
    - If using Configmanager, just press F1 in game to change settings.
