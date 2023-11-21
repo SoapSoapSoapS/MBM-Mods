@@ -35,45 +35,55 @@ public static class TimeControls
 
     public static void Initialize(ConfigFile config)
     {
-        Speed1_5 = config.Bind(new ConfigInfo<KeyCode>()
-        {
-            Section = nameof(TimeControls),
-            Name = nameof(Speed1_5),
-            Description = "Keybind for 1.5x speed",
-            DefaultValue = KeyCode.None
-        });
+        Speed1_5 = config.Bind(
+            new ConfigInfo<KeyCode>()
+            {
+                Section = nameof(TimeControls),
+                Name = nameof(Speed1_5),
+                Description = "Keybind for 1.5x speed",
+                DefaultValue = KeyCode.None
+            }
+        );
 
-        Speed2 = config.Bind(new ConfigInfo<KeyCode>()
-        {
-            Section = nameof(TimeControls),
-            Name = nameof(Speed2),
-            Description = "Keybind for 2x speed",
-            DefaultValue = KeyCode.None
-        });
+        Speed2 = config.Bind(
+            new ConfigInfo<KeyCode>()
+            {
+                Section = nameof(TimeControls),
+                Name = nameof(Speed2),
+                Description = "Keybind for 2x speed",
+                DefaultValue = KeyCode.None
+            }
+        );
 
-        Speed3 = config.Bind(new ConfigInfo<KeyCode>()
-        {
-            Section = nameof(TimeControls),
-            Name = nameof(Speed3),
-            Description = "Keybind for 3x speed",
-            DefaultValue = KeyCode.None
-        });
+        Speed3 = config.Bind(
+            new ConfigInfo<KeyCode>()
+            {
+                Section = nameof(TimeControls),
+                Name = nameof(Speed3),
+                Description = "Keybind for 3x speed",
+                DefaultValue = KeyCode.None
+            }
+        );
 
-        Speed4 = config.Bind(new ConfigInfo<KeyCode>()
-        {
-            Section = nameof(TimeControls),
-            Name = nameof(Speed4),
-            Description = "Keybind for 4x speed",
-            DefaultValue = KeyCode.None
-        });
+        Speed4 = config.Bind(
+            new ConfigInfo<KeyCode>()
+            {
+                Section = nameof(TimeControls),
+                Name = nameof(Speed4),
+                Description = "Keybind for 4x speed",
+                DefaultValue = KeyCode.None
+            }
+        );
 
-        Speed5 = config.Bind(new ConfigInfo<KeyCode>()
-        {
-            Section = nameof(TimeControls),
-            Name = nameof(Speed5),
-            Description = "Keybind for 5x speed",
-            DefaultValue = KeyCode.None
-        });
+        Speed5 = config.Bind(
+            new ConfigInfo<KeyCode>()
+            {
+                Section = nameof(TimeControls),
+                Name = nameof(Speed5),
+                Description = "Keybind for 5x speed",
+                DefaultValue = KeyCode.None
+            }
+        );
 
         var id1_5 = Keybindings.RegisterKeybinding(Speed1_5.Value, SetSpeed(1.5f));
         var id2 = Keybindings.RegisterKeybinding(Speed2.Value, SetSpeed(2f));
@@ -90,16 +100,17 @@ public static class TimeControls
 
     private static Action SetSpeed(float f)
     {
-        return () => {
+        return () =>
+        {
             GameManager.Instance.GameSpeed = f;
         };
     }
 
     private static EventHandler OnUpdateSetting(Guid guid, float f)
     {
-        return (object sender, EventArgs e) => 
+        return (object sender, EventArgs e) =>
         {
-            var newKey = (KeyCode) ((ConfigEntryBase) sender).BoxedValue;
+            var newKey = (KeyCode)((ConfigEntryBase)sender).BoxedValue;
             Keybindings.RegisterKeybinding(guid, newKey, SetSpeed(f));
         };
     }

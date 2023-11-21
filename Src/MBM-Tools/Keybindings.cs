@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace Tools;
 
-public static class Keybindings {
+public static class Keybindings
+{
     private static IDictionary<Guid, (KeyCode key, Action act)> bindings = new Dictionary<Guid, (KeyCode, Action)>();
 
     private static EGameWindow[] menuWindows = new EGameWindow[]
@@ -40,11 +41,12 @@ public static class Keybindings {
     public static void OnUpdate()
     {
         var areMenusOpen = menuWindows.Any(w => GameManager.Instance.GetWindowState(w));
-        if(areMenusOpen) return;
+        if (areMenusOpen)
+            return;
 
-        foreach(var kvp in bindings)
+        foreach (var kvp in bindings)
         {
-            if(Input.GetKeyUp(kvp.Value.key))
+            if (Input.GetKeyUp(kvp.Value.key))
             {
                 kvp.Value.act();
             }

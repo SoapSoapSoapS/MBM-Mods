@@ -1,15 +1,17 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using MBMScripts;
-using System.Collections.Generic;
 
 namespace Tools;
 
-public static class PeriodicActionRunner {
+public static class PeriodicActionRunner
+{
     /// <summary>
     /// List of actions to be run periodically
     /// </summary>
-    private static readonly IDictionary<float, PeriodicActionGroup> PeriodicActionGroups = new Dictionary<float, PeriodicActionGroup>();
+    private static readonly IDictionary<float, PeriodicActionGroup> PeriodicActionGroups =
+        new Dictionary<float, PeriodicActionGroup>();
 
     /// <summary>
     /// Actions to run against the GameManager instance on load
@@ -23,7 +25,7 @@ public static class PeriodicActionRunner {
     {
         var paction = new CustomAction(act);
 
-        if(PeriodicActionGroups.TryGetValue(period, out var pag))
+        if (PeriodicActionGroups.TryGetValue(period, out var pag))
         {
             pag.actions.Add(paction);
         }
@@ -60,11 +62,11 @@ public static class PeriodicActionRunner {
     [HarmonyPostfix]
     public static void OnUpdate(float deltaTime)
     {
-        foreach(var kvp in PeriodicActionGroups)
+        foreach (var kvp in PeriodicActionGroups)
         {
             var pag = kvp.Value;
             pag.timeSinceRun += deltaTime;
-            if(pag.timeSinceRun > pag.period)
+            if (pag.timeSinceRun > pag.period)
             {
                 try
                 {

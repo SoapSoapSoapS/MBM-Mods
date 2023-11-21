@@ -18,7 +18,7 @@ public class Plugin : BaseUnityPlugin
     {
         log = Logger;
     }
-    
+
     private void Awake()
     {
         // Plugin startup logic

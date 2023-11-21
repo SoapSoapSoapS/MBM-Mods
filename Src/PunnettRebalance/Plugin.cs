@@ -23,7 +23,7 @@ public class Plugin : BaseUnityPlugin
 
         PunnettInheritance.Initialize(Config);
     }
-    
+
     private void Awake()
     {
         try

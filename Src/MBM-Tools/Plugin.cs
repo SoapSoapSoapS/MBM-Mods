@@ -42,7 +42,8 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    public void Update() {
+    public void Update()
+    {
         Keybindings.OnUpdate();
     }
 }

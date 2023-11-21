@@ -55,7 +55,7 @@ public class PeriodicActionGroup
 
     public void Act()
     {
-        foreach(var action in actions)
+        foreach (var action in actions)
         {
             action.act();
         }
