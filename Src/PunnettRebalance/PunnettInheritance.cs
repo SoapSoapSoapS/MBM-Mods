@@ -37,6 +37,7 @@ public static class PunnettInheritance
 
     private static ETrait[] TraitArray = (ETrait[])Enum.GetValues(typeof(ETrait));
 
+    // NOTE: if this method returns true: the original game code runs, if false: it doesn't.
     [HarmonyPatch(typeof(Character), nameof(Character.InitializeTrait), new[] { typeof(Character), typeof(Character) })]
     [HarmonyPrefix]
     public static bool OverrideInitializeTrait(Character female, Character male, Character __instance)
