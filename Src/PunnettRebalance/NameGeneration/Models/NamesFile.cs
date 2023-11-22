@@ -1,34 +1,45 @@
-using System;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace PunnettRebalance.NameGeneration.Models;
 
-[Serializable]
-public class NamesFile<T, U>(T names, U surnames)
+[XmlRoot(ElementName = "root")]
+public class NamesFile<T, U>
     where T : INameGenerator
     where U : INameGenerator
 {
-    public T names { get; } = names;
+    [XmlElement(ElementName = "names")]
+    public T? Names { get; set; }
 
-    public U surnames { get; } = surnames;
+    [XmlElement(ElementName = "surnames")]
+    public U? Surnames { get; set; }
+
+    public static NamesFile<T, U> ParseXml(string file)
+    {
+        var xmls = new XmlSerializer(typeof(NamesFile<T, U>));
+
+        using TextReader reader = new StringReader(file);
+
+        return (NamesFile<T, U>) xmls.Deserialize(reader);
+    }
 
     public string? GetFullName(string? surname = null)
     {
-        if(surname != null && surname != string.Empty)
+        if (surname != null && surname != string.Empty)
         {
             var beginLastName = surname.LastIndexOf(' ') + 1;
 
-            if(beginLastName < surname.Length)
+            if (beginLastName < surname.Length)
             {
                 surname = surname.Substring(beginLastName);
             }
-
         }
 
-        if(surname == null || surname == string.Empty)
+        if (surname == null || surname == string.Empty)
         {
-            surname = surnames.GetName();
+            surname = Surnames.GetName();
         }
 
-        return names.GetName() + " " + surname;
+        return Names.GetName() + " " + surname;
     }
 }

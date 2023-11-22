@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using BepInEx.Configuration;
 using MBMScripts;
 using PunnettRebalance.NameGeneration.Models;
@@ -25,7 +26,7 @@ public static class Generator
 
     static Generator()
     {
-        DragonNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.DragonNames);
+        // DragonNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.DragonNames);
         DwarfNames = JsonUtility.FromJson<NamesFile<PrefixSuffixPair, NameList>>(Names.DwarfNames);
         ElfNames = JsonUtility.FromJson<NamesFile<PrefixSuffixPair, PrefixSuffixPair>>(Names.ElfNames);
         GoblinNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.GoblinNames);
@@ -49,7 +50,7 @@ public static class Generator
     {
         string? name = null;
 
-        Plugin.log?.LogWarning(JsonUtility.FromJson<FirstLastNameFile>(Names.DragonNames).names.Count);
+        Plugin.log?.LogWarning(NamesFile<NameList, NameList>.ParseXml(Names.DragonNames).Names[5]);
 
         switch (race)
         {

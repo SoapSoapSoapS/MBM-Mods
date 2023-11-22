@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace PunnettRebalance.NameGeneration.Models;
 
-public class PrefixSuffixPair(List<string> prefixes, List<string> suffixes) : INameGenerator
+public class PrefixSuffixPair : INameGenerator
 {
-    [JsonProperty("prefix")]
-    public List<string> Prefixes { get; } = prefixes;
+    [XmlElement(ElementName="prefix")] 
+    public List<string>? Prefixes { get; set; }
 
-    [JsonProperty("suffix")]
-    public List<string> Suffixes { get; } = suffixes;
+    [XmlElement(ElementName="suffix")]
+    public List<string>? Suffixes { get; set; }
 
     public string GetName()
     {
