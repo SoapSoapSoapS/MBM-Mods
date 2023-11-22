@@ -62,7 +62,7 @@ public static class Generator
                 name = ElfNames?.GetFullName(motherName);
                 break;
             case ERace.Goblin:
-                name = GoblinNames?.GetFullName(fatherName);
+                name = GoblinNames?.GetFullName();
                 break;
             case ERace.Hitsuji:
                 name = HitsujiNames?.GetFullName(motherName);
