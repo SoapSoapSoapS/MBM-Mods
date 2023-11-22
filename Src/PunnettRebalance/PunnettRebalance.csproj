@@ -5,7 +5,7 @@
     <RootNamespace>PunnettRebalance</RootNamespace>
     <AssemblyName>sss.plugins.punnettrebalance</AssemblyName>
     <Product>PunnettRebalance</Product>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -29,6 +29,25 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MBM-Tools\MBMTools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Names.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Names.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Names.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Names.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

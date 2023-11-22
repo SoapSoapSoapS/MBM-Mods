@@ -9,6 +9,7 @@
             "type": "shell",
             "args": [
                 "build",
+                "./MBM-Mods.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

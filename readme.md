@@ -26,10 +26,15 @@ A genetic rework to make the game harder.
 ```
 [PunnettInheritance]
 
-## Allows 50/50 genetic inheritance
+## Enables 50/50 genetic inheritance, unless a special inheritance trait applies.
 # Setting type: Boolean
 # Default value: true
-Enable = true
+EnableGenetics = true
+
+## Enables custom names and name inheritance
+# Setting type: Boolean
+# Default value: true
+EnableNaming = true
 ```
 
 ---
