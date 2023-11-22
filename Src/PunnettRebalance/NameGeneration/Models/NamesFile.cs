@@ -25,6 +25,9 @@ public class NamesFile<T, U>
 
     public string? GetFullName(string? surname = null)
     {
+        if (Names == null)
+            return null;
+
         if (surname != null && surname != string.Empty)
         {
             var beginLastName = surname.LastIndexOf(' ') + 1;
@@ -37,8 +40,11 @@ public class NamesFile<T, U>
 
         if (surname == null || surname == string.Empty)
         {
-            surname = Surnames.GetName();
+            surname = Surnames?.GetName();
         }
+
+        if(surname == null)
+            return Names.GetName();
 
         return Names.GetName() + " " + surname;
     }

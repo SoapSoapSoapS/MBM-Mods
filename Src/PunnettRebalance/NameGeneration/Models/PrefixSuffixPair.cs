@@ -11,8 +11,11 @@ public class PrefixSuffixPair : INameGenerator
     [XmlElement(ElementName="suffix")]
     public List<string>? Suffixes { get; set; }
 
-    public string GetName()
+    public string? GetName()
     {
+        if(Prefixes == null || Suffixes == null)
+            return null;
+
         var r = Generator.Random.Next(Prefixes.Count);
         var prefix = Prefixes[r];
 

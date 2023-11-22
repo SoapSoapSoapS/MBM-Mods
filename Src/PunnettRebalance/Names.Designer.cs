@@ -59,5 +59,382 @@ namespace PunnettRebalance {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Abla&lt;/names&gt;
+        ///  &lt;names&gt;Abrar&lt;/names&gt;
+        ///  &lt;names&gt;Adalet&lt;/names&gt;
+        ///  &lt;names&gt;Ahlam&lt;/names&gt;
+        ///  &lt;names&gt;Aisha&lt;/names&gt;
+        ///  &lt;names&gt;Aliyah&lt;/names&gt;
+        ///  &lt;names&gt;Amal&lt;/names&gt;
+        ///  &lt;names&gt;Amina&lt;/names&gt;
+        ///  &lt;names&gt;Anisa&lt;/names&gt;
+        ///  &lt;names&gt;Arwa&lt;/names&gt;
+        ///  &lt;names&gt;Aya&lt;/names&gt;
+        ///  &lt;names&gt;Aziza&lt;/names&gt;
+        ///  &lt;names&gt;Azra&lt;/names&gt;
+        ///  &lt;names&gt;Azza&lt;/names&gt;
+        ///  &lt;names&gt;Calafia&lt;/names&gt;
+        ///  &lt;names&gt;Dalia&lt;/names&gt;
+        ///  &lt;names&gt;Dinara&lt;/names&gt;
+        ///  &lt;names&gt;Dua&lt;/names&gt;
+        ///  &lt;names&gt;Dunya&lt;/names&gt;
+        ///  &lt;names&gt;El [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DragonNames {
+            get {
+                return ResourceManager.GetString("DragonNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;
+        ///    &lt;prefix&gt;Anb&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Art&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Aud&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Bal&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Bar&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Bol&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Dag&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Daf&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Del&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Di&lt;/prefix&gt;
+        ///    &lt;prefix&gt;H&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Eri&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Falk&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Fall&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Fine&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Gil&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Gun&lt;/prefix&gt;
+        ///    &lt;prefi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DwarfNames {
+            get {
+                return ResourceManager.GetString("DwarfNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;
+        ///    &lt;prefix&gt;Ael&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Aer&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Af&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Ah&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Al&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Am&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Ama&lt;/prefix&gt;
+        ///    &lt;prefix&gt;An&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Ang&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Ansr&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Ar&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Arì&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Arn&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Aza&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Bael&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Bes&lt;/prefix&gt;
+        ///    &lt;prefix&gt;Cael&lt;/prefix&gt;
+        ///    &lt;prefix&gt;C [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ElfNames {
+            get {
+                return ResourceManager.GetString("ElfNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Treech&lt;/names&gt;
+        ///  &lt;names&gt;Xord&lt;/names&gt;
+        ///  &lt;names&gt;Vacs&lt;/names&gt;
+        ///  &lt;names&gt;Krart&lt;/names&gt;
+        ///  &lt;names&gt;Ult&lt;/names&gt;
+        ///  &lt;names&gt;Sbylom&lt;/names&gt;
+        ///  &lt;names&gt;Shiogtelm&lt;/names&gt;
+        ///  &lt;names&gt;Weilt&lt;/names&gt;
+        ///  &lt;names&gt;Svac&lt;/names&gt;
+        ///  &lt;names&gt;Stoiv&lt;/names&gt;
+        ///  &lt;names&gt;Zir&lt;/names&gt;
+        ///  &lt;names&gt;Klegion&lt;/names&gt;
+        ///  &lt;names&gt;Eeczs&lt;/names&gt;
+        ///  &lt;names&gt;Dowkat&lt;/names&gt;
+        ///  &lt;names&gt;Mildirie&lt;/names&gt;
+        ///  &lt;names&gt;Aqaf&lt;/names&gt;
+        ///  &lt;names&gt;Nocten&lt;/names&gt;
+        ///  &lt;names&gt;Krovzat&lt;/names&gt;
+        ///  &lt;names&gt;Pirg&lt;/names&gt;
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GoblinNames {
+            get {
+                return ResourceManager.GetString("GoblinNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Aerona&lt;/names&gt;
+        ///  &lt;names&gt;Afanen&lt;/names&gt;
+        ///  &lt;names&gt;Alaw&lt;/names&gt;
+        ///  &lt;names&gt;Alys&lt;/names&gt;
+        ///  &lt;names&gt;Angharad&lt;/names&gt;
+        ///  &lt;names&gt;Argoel&lt;/names&gt;
+        ///  &lt;names&gt;Arianwen&lt;/names&gt;
+        ///  &lt;names&gt;Arlais&lt;/names&gt;
+        ///  &lt;names&gt;Aures&lt;/names&gt;
+        ///  &lt;names&gt;Beca&lt;/names&gt;
+        ///  &lt;names&gt;Bethan&lt;/names&gt;
+        ///  &lt;names&gt;Betrys&lt;/names&gt;
+        ///  &lt;names&gt;Briallen&lt;/names&gt;
+        ///  &lt;names&gt;Bronwyn&lt;/names&gt;
+        ///  &lt;names&gt;Caraf&lt;/names&gt;
+        ///  &lt;names&gt;Cari&lt;/names&gt;
+        ///  &lt;names&gt;Caron&lt;/names&gt;
+        ///  &lt;names&gt;Catrin&lt;/names&gt;
+        ///  &lt;names&gt;Ceridwen [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HitsujiNames {
+            get {
+                return ResourceManager.GetString("HitsujiNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Aadhya&lt;/names&gt;
+        ///  &lt;names&gt;Aaliyah&lt;/names&gt;
+        ///  &lt;names&gt;Abby&lt;/names&gt;
+        ///  &lt;names&gt;Abigail&lt;/names&gt;
+        ///  &lt;names&gt;Ada&lt;/names&gt;
+        ///  &lt;names&gt;Adalee&lt;/names&gt;
+        ///  &lt;names&gt;Adaline&lt;/names&gt;
+        ///  &lt;names&gt;Adalyn&lt;/names&gt;
+        ///  &lt;names&gt;Adalynn&lt;/names&gt;
+        ///  &lt;names&gt;Addilyn&lt;/names&gt;
+        ///  &lt;names&gt;Addilynn&lt;/names&gt;
+        ///  &lt;names&gt;Addison&lt;/names&gt;
+        ///  &lt;names&gt;Adelaide&lt;/names&gt;
+        ///  &lt;names&gt;Adele&lt;/names&gt;
+        ///  &lt;names&gt;Adelina&lt;/names&gt;
+        ///  &lt;names&gt;Adeline&lt;/names&gt;
+        ///  &lt;names&gt;Adelyn&lt;/names&gt;
+        ///  &lt;names&gt;Adelynn&lt;/names&gt;
+        ///  &lt;nam [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string HumanNames {
+            get {
+                return ResourceManager.GetString("HumanNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Ae-Cha&lt;/names&gt;
+        ///  &lt;names&gt;Ari&lt;/names&gt;
+        ///  &lt;names&gt;Binna&lt;/names&gt;
+        ///  &lt;names&gt;Bora&lt;/names&gt;
+        ///  &lt;names&gt;Boram&lt;/names&gt;
+        ///  &lt;names&gt;Chae-Won&lt;/names&gt;
+        ///  &lt;names&gt;Chae-Yeong&lt;/names&gt;
+        ///  &lt;names&gt;Da-Eun&lt;/names&gt;
+        ///  &lt;names&gt;Dal-Rae&lt;/names&gt;
+        ///  &lt;names&gt;Dam-Bi&lt;/names&gt;
+        ///  &lt;names&gt;Dan-Bi&lt;/names&gt;
+        ///  &lt;names&gt;Da-Som&lt;/names&gt;
+        ///  &lt;names&gt;Duri&lt;/names&gt;
+        ///  &lt;names&gt;Eun-Jeong&lt;/names&gt;
+        ///  &lt;names&gt;Eun-Ji&lt;/names&gt;
+        ///  &lt;names&gt;Eun-Ju&lt;/names&gt;
+        ///  &lt;names&gt;Eun-Jung&lt;/names&gt;
+        ///  &lt;names&gt;Eun-Kyung&lt;/names&gt;
+        ///  &lt;name [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string InuNames {
+            get {
+                return ResourceManager.GetString("InuNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Achilles&lt;/names&gt;
+        ///  &lt;names&gt;Aegeus&lt;/names&gt;
+        ///  &lt;names&gt;Aikat&lt;/names&gt;
+        ///  &lt;names&gt;Ajax&lt;/names&gt;
+        ///  &lt;names&gt;Akakios&lt;/names&gt;
+        ///  &lt;names&gt;Alcaeus&lt;/names&gt;
+        ///  &lt;names&gt;Alexandros&lt;/names&gt;
+        ///  &lt;names&gt;Alexis&lt;/names&gt;
+        ///  &lt;names&gt;Anargyros&lt;/names&gt;
+        ///  &lt;names&gt;Anastasios&lt;/names&gt;
+        ///  &lt;names&gt;Andreas&lt;/names&gt;
+        ///  &lt;names&gt;Androcles&lt;/names&gt;
+        ///  &lt;names&gt;Angelos&lt;/names&gt;
+        ///  &lt;names&gt;Antigonus&lt;/names&gt;
+        ///  &lt;names&gt;Antonios&lt;/names&gt;
+        ///  &lt;names&gt;Apostolos&lt;/names&gt;
+        ///  &lt;names&gt;Aris&lt;/names&gt;
+        ///  &lt;names&gt;Ariste [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MinotaurNames {
+            get {
+                return ResourceManager.GetString("MinotaurNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Ai&lt;/names&gt;
+        ///  &lt;names&gt;Aiko&lt;/names&gt;
+        ///  &lt;names&gt;Aimi&lt;/names&gt;
+        ///  &lt;names&gt;Aina&lt;/names&gt;
+        ///  &lt;names&gt;Airi&lt;/names&gt;
+        ///  &lt;names&gt;Akane&lt;/names&gt;
+        ///  &lt;names&gt;Akari&lt;/names&gt;
+        ///  &lt;names&gt;Akemi&lt;/names&gt;
+        ///  &lt;names&gt;Aki&lt;/names&gt;
+        ///  &lt;names&gt;Akiko&lt;/names&gt;
+        ///  &lt;names&gt;Akira&lt;/names&gt;
+        ///  &lt;names&gt;Ami&lt;/names&gt;
+        ///  &lt;names&gt;Aoi&lt;/names&gt;
+        ///  &lt;names&gt;Asami&lt;/names&gt;
+        ///  &lt;names&gt;Asuka&lt;/names&gt;
+        ///  &lt;names&gt;Atsuko&lt;/names&gt;
+        ///  &lt;names&gt;Aya&lt;/names&gt;
+        ///  &lt;names&gt;Ayaka&lt;/names&gt;
+        ///  &lt;names&gt;Ayako&lt;/names&gt;
+        ///  &lt;names&gt;Ayame&lt;/names [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string NekoNames {
+            get {
+                return ResourceManager.GetString("NekoNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Abbarth&lt;/names&gt;
+        ///  &lt;names&gt;Alfaeldssen&lt;/names&gt;
+        ///  &lt;names&gt;Algbal&lt;/names&gt;
+        ///  &lt;names&gt;Alimi&lt;/names&gt;
+        ///  &lt;names&gt;Alldrich&lt;/names&gt;
+        ///  &lt;names&gt;Aloral&lt;/names&gt;
+        ///  &lt;names&gt;Alrahrikson&lt;/names&gt;
+        ///  &lt;names&gt;Angne&lt;/names&gt;
+        ///  &lt;names&gt;Anur&lt;/names&gt;
+        ///  &lt;names&gt;Argarokssen&lt;/names&gt;
+        ///  &lt;names&gt;Asarsson&lt;/names&gt;
+        ///  &lt;names&gt;Asbdan&lt;/names&gt;
+        ///  &lt;names&gt;Aslot&lt;/names&gt;
+        ///  &lt;names&gt;Asornssen&lt;/names&gt;
+        ///  &lt;names&gt;Axesnarl&lt;/names&gt;
+        ///  &lt;names&gt;Bear&lt;/names&gt;
+        ///  &lt;names&gt;Bloody&lt;/names&gt;
+        ///  &lt;names&gt;Bonefang&lt;/n [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OrcNames {
+            get {
+                return ResourceManager.GetString("OrcNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Aamadu&lt;/names&gt;
+        ///  &lt;names&gt;Abidemi&lt;/names&gt;
+        ///  &lt;names&gt;Aboubacar&lt;/names&gt;
+        ///  &lt;names&gt;Ade&lt;/names&gt;
+        ///  &lt;names&gt;Akpan&lt;/names&gt;
+        ///  &lt;names&gt;Akpofure&lt;/names&gt;
+        ///  &lt;names&gt;Alassane&lt;/names&gt;
+        ///  &lt;names&gt;Alemayehu&lt;/names&gt;
+        ///  &lt;names&gt;Amadi&lt;/names&gt;
+        ///  &lt;names&gt;Ameqran&lt;/names&gt;
+        ///  &lt;names&gt;Ayomide&lt;/names&gt;
+        ///  &lt;names&gt;Azubuike&lt;/names&gt;
+        ///  &lt;names&gt;Berhane&lt;/names&gt;
+        ///  &lt;names&gt;Bitrus&lt;/names&gt;
+        ///  &lt;names&gt;Bongani&lt;/names&gt;
+        ///  &lt;names&gt;Cali&lt;/names&gt;
+        ///  &lt;names&gt;Cardiraxman&lt;/names&gt;
+        ///  &lt;names&gt;Chibuike&lt;/name [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SalamanderNames {
+            get {
+                return ResourceManager.GetString("SalamanderNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Abeque&lt;/names&gt;
+        ///  &lt;names&gt;Agisa&lt;/names&gt;
+        ///  &lt;names&gt;Aiukli&lt;/names&gt;
+        ///  &lt;names&gt;Alaska&lt;/names&gt;
+        ///  &lt;names&gt;Angeni&lt;/names&gt;
+        ///  &lt;names&gt;Aponi&lt;/names&gt;
+        ///  &lt;names&gt;Aquinnah&lt;/names&gt;
+        ///  &lt;names&gt;Ashwiyaa&lt;/names&gt;
+        ///  &lt;names&gt;Atabey&lt;/names&gt;
+        ///  &lt;names&gt;Atina&lt;/names&gt;
+        ///  &lt;names&gt;Awe&lt;/names&gt;
+        ///  &lt;names&gt;Aylin&lt;/names&gt;
+        ///  &lt;names&gt;Byhalia&lt;/names&gt;
+        ///  &lt;names&gt;Chaha&lt;/names&gt;
+        ///  &lt;names&gt;Chepi&lt;/names&gt;
+        ///  &lt;names&gt;Cheyenne&lt;/names&gt;
+        ///  &lt;names&gt;Cholena&lt;/names&gt;
+        ///  &lt;names&gt;Dahteste&lt;/names&gt;
+        ///  &lt;names&gt;Dak [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UsagiNames {
+            get {
+                return ResourceManager.GetString("UsagiNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+        ///&lt;root&gt;
+        ///  &lt;names&gt;Aidan&lt;/names&gt;
+        ///  &lt;names&gt;Aldis&lt;/names&gt;
+        ///  &lt;names&gt;Alfie&lt;/names&gt;
+        ///  &lt;names&gt;Alfred&lt;/names&gt;
+        ///  &lt;names&gt;Alistair&lt;/names&gt;
+        ///  &lt;names&gt;Archibald&lt;/names&gt;
+        ///  &lt;names&gt;Arthur&lt;/names&gt;
+        ///  &lt;names&gt;Basil&lt;/names&gt;
+        ///  &lt;names&gt;Benedict&lt;/names&gt;
+        ///  &lt;names&gt;Benjamin&lt;/names&gt;
+        ///  &lt;names&gt;Bertram&lt;/names&gt;
+        ///  &lt;names&gt;Blake&lt;/names&gt;
+        ///  &lt;names&gt;Byron&lt;/names&gt;
+        ///  &lt;names&gt;Caledon&lt;/names&gt;
+        ///  &lt;names&gt;Callum&lt;/names&gt;
+        ///  &lt;names&gt;Cameron&lt;/names&gt;
+        ///  &lt;names&gt;Carew&lt;/names&gt;
+        ///  &lt;names&gt;Charlie&lt;/names&gt;
+        ///  &lt;name [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WerewolfNames {
+            get {
+                return ResourceManager.GetString("WerewolfNames", resourceCulture);
+            }
+        }
     }
 }

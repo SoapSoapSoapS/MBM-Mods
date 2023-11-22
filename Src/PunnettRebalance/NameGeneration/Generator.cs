@@ -26,19 +26,19 @@ public static class Generator
 
     static Generator()
     {
-        // DragonNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.DragonNames);
-        DwarfNames = JsonUtility.FromJson<NamesFile<PrefixSuffixPair, NameList>>(Names.DwarfNames);
-        ElfNames = JsonUtility.FromJson<NamesFile<PrefixSuffixPair, PrefixSuffixPair>>(Names.ElfNames);
-        GoblinNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.GoblinNames);
-        HitsujiNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.HitsujiNames);
-        HumanNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.HumanNames);
-        InuNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.InuNames);
-        MinotaurNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.MinotaurNames);
-        NekoNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.NekoNames);
-        OrcNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.OrcNames);
-        SalamanderNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.SalamanderNames);
-        UsagiNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.UsagiNames);
-        WerewolfNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.WerewolfNames);
+         DragonNames = NamesFile<NameList, NameList>.ParseXml(Names.DragonNames);
+        DwarfNames = NamesFile<PrefixSuffixPair, NameList>.ParseXml(Names.DwarfNames);
+        ElfNames = NamesFile<PrefixSuffixPair, PrefixSuffixPair>.ParseXml(Names.ElfNames);
+        GoblinNames = NamesFile<NameList, NameList>.ParseXml(Names.GoblinNames);
+        HitsujiNames = NamesFile<NameList, NameList>.ParseXml(Names.HitsujiNames);
+        HumanNames = NamesFile<NameList, NameList>.ParseXml(Names.HumanNames);
+        InuNames = NamesFile<NameList, NameList>.ParseXml(Names.InuNames);
+        MinotaurNames = NamesFile<NameList, NameList>.ParseXml(Names.MinotaurNames);
+        NekoNames = NamesFile<NameList, NameList>.ParseXml(Names.NekoNames);
+        OrcNames = NamesFile<NameList, NameList>.ParseXml(Names.OrcNames);
+        SalamanderNames = NamesFile<NameList, NameList>.ParseXml(Names.SalamanderNames);
+        UsagiNames = NamesFile<NameList, NameList>.ParseXml(Names.UsagiNames);
+        WerewolfNames = NamesFile<NameList, NameList>.ParseXml(Names.WerewolfNames);
     }
 
     public static bool TryGetRaceName(
@@ -49,8 +49,6 @@ public static class Generator
     )
     {
         string? name = null;
-
-        Plugin.log?.LogWarning(NamesFile<NameList, NameList>.ParseXml(Names.DragonNames).Names[5]);
 
         switch (race)
         {

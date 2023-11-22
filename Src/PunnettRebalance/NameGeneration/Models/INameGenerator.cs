@@ -2,5 +2,5 @@ namespace PunnettRebalance.NameGeneration.Models;
 
 public interface INameGenerator
 {
-    public string GetName();
+    public string? GetName();
 }
