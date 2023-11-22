@@ -1,7 +1,7 @@
-using System;
+using BepInEx.Configuration;
 using MBMScripts;
-using Newtonsoft.Json;
 using PunnettRebalance.NameGeneration.Models;
+using UnityEngine;
 
 namespace PunnettRebalance.NameGeneration;
 
@@ -21,83 +21,80 @@ public static class Generator
     private static NamesFile<NameList, NameList>? UsagiNames;
     private static NamesFile<NameList, NameList>? WerewolfNames;
 
-    public static Random Random = new Random();
+    public static System.Random Random = new();
 
     static Generator()
     {
-        DragonNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.DragonNames);
-        DwarfNames = JsonConvert.DeserializeObject<NamesFile<PrefixSuffixPair, NameList>>(Names.DwarfNames);
-        ElfNames = JsonConvert.DeserializeObject<NamesFile<PrefixSuffixPair, PrefixSuffixPair>>(Names.ElfNames);
-        GoblinNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.GoblinNames);
-        HitsujiNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.HitsujiNames);
-        HumanNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.HumanNames);
-        InuNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.InuNames);
-        MinotaurNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.MinotaurNames);
-        NekoNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.NekoNames);
-        OrcNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.OrcNames);
-        SalamanderNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.SalamanderNames);
-        UsagiNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.UsagiNames);
-        WerewolfNames = JsonConvert.DeserializeObject<NamesFile<NameList, NameList>>(Names.WerewolfNames);
+        DragonNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.DragonNames);
+        DwarfNames = JsonUtility.FromJson<NamesFile<PrefixSuffixPair, NameList>>(Names.DwarfNames);
+        ElfNames = JsonUtility.FromJson<NamesFile<PrefixSuffixPair, PrefixSuffixPair>>(Names.ElfNames);
+        GoblinNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.GoblinNames);
+        HitsujiNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.HitsujiNames);
+        HumanNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.HumanNames);
+        InuNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.InuNames);
+        MinotaurNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.MinotaurNames);
+        NekoNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.NekoNames);
+        OrcNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.OrcNames);
+        SalamanderNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.SalamanderNames);
+        UsagiNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.UsagiNames);
+        WerewolfNames = JsonUtility.FromJson<NamesFile<NameList, NameList>>(Names.WerewolfNames);
     }
 
-    private static string? GetFullName<T, U>(NamesFile<T, U>? nameFile)
-        where T : INameGenerator
-        where U : INameGenerator 
-    {
-        if(nameFile == null)
-            return null;
-
-        return nameFile.Names.GetName() + " " + nameFile.Surnames.GetName();
-    }
-
-    public static bool TryGetRaceName(ERace race, out string fullname)
+    public static bool TryGetRaceName(
+        ERace race,
+        out string fullname,
+        string? motherName = null,
+        string? fatherName = null
+    )
     {
         string? name = null;
 
-        switch(race)
+        Plugin.log?.LogWarning(JsonUtility.FromJson<FirstLastNameFile>(Names.DragonNames).names.Count);
+
+        switch (race)
         {
             case ERace.Dragonian:
-                name = GetFullName(DragonNames);
+                name = DragonNames?.GetFullName(motherName);
                 break;
             case ERace.Dwarf:
-                name = GetFullName(DwarfNames);
+                name = DwarfNames?.GetFullName(motherName);
                 break;
             case ERace.Elf:
-                name = GetFullName(ElfNames);
+                name = ElfNames?.GetFullName(motherName);
                 break;
             case ERace.Goblin:
-                name = GetFullName(GoblinNames);
+                name = GoblinNames?.GetFullName(fatherName);
                 break;
             case ERace.Hitsuji:
-                name = GetFullName(HitsujiNames);
+                name = HitsujiNames?.GetFullName(motherName);
                 break;
             case ERace.Human:
-                name = GetFullName(HumanNames);
+                name = HumanNames?.GetFullName(motherName);
                 break;
             case ERace.Inu:
-                name = GetFullName(InuNames);
+                name = InuNames?.GetFullName(motherName);
                 break;
             case ERace.Minotaur:
-                name = GetFullName(MinotaurNames);
+                name = MinotaurNames?.GetFullName(fatherName);
                 break;
             case ERace.Neko:
-                name = GetFullName(NekoNames);
+                name = NekoNames?.GetFullName(motherName);
                 break;
             case ERace.Orc:
-                name = GetFullName(OrcNames);
+                name = OrcNames?.GetFullName(fatherName);
                 break;
             case ERace.Salamander:
-                name = GetFullName(SalamanderNames);
+                name = SalamanderNames?.GetFullName(fatherName);
                 break;
             case ERace.Usagi:
-                name = GetFullName(UsagiNames);
+                name = UsagiNames?.GetFullName(motherName);
                 break;
             case ERace.Werewolf:
-                name = GetFullName(WerewolfNames);
+                name = WerewolfNames?.GetFullName(fatherName);
                 break;
         }
 
-        if(name == null)
+        if (name == null)
         {
             fullname = string.Empty;
             return false;

@@ -1,12 +1,34 @@
-using Newtonsoft.Json;
+using System;
 
 namespace PunnettRebalance.NameGeneration.Models;
 
-public class NamesFile<T,U>(T names, U surnames)
+[Serializable]
+public class NamesFile<T, U>(T names, U surnames)
+    where T : INameGenerator
+    where U : INameGenerator
 {
-    [JsonProperty("names")]
-    public T Names { get; } = names;
+    public T names { get; } = names;
 
-    [JsonProperty("surnames")]
-    public U Surnames { get; } = surnames;
+    public U surnames { get; } = surnames;
+
+    public string? GetFullName(string? surname = null)
+    {
+        if(surname != null && surname != string.Empty)
+        {
+            var beginLastName = surname.LastIndexOf(' ') + 1;
+
+            if(beginLastName < surname.Length)
+            {
+                surname = surname.Substring(beginLastName);
+            }
+
+        }
+
+        if(surname == null || surname == string.Empty)
+        {
+            surname = surnames.GetName();
+        }
+
+        return names.GetName() + " " + surname;
+    }
 }

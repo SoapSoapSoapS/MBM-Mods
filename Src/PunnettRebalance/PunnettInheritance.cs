@@ -4,6 +4,7 @@ using System.Linq;
 using BepInEx.Configuration;
 using HarmonyLib;
 using MBMScripts;
+using PunnettRebalance.NameGeneration;
 using Tools;
 using Random = UnityEngine.Random;
 
@@ -18,18 +19,33 @@ namespace PunnettRebalance;
 public static class PunnettInheritance
 {
     /// <summary>
-    /// Rest time.
+    /// If true, override default genetic inheritance.
     /// </summary>
-    public static ConfigEntry<bool>? Enable;
+    public static ConfigEntry<bool>? EnableGenetics;
+
+    /// <summary>
+    /// If true, override default naming.
+    /// </summary>
+    public static ConfigEntry<bool>? EnableNaming;
 
     public static void Initialize(ConfigFile config)
     {
-        Enable = config.Bind(
+        EnableGenetics = config.Bind(
             new ConfigInfo<bool>()
             {
                 Section = nameof(PunnettInheritance),
-                Name = nameof(Enable),
-                Description = "Allows 50/50 genetic inheritance",
+                Name = nameof(EnableGenetics),
+                Description = "Enables 50/50 genetic inheritance, unless a special inheritance trait applies.",
+                DefaultValue = true
+            }
+        );
+
+        EnableNaming = config.Bind(
+            new ConfigInfo<bool>()
+            {
+                Section = nameof(PunnettInheritance),
+                Name = nameof(EnableNaming),
+                Description = "Enables custom names and name inheritance",
                 DefaultValue = true
             }
         );
@@ -38,13 +54,19 @@ public static class PunnettInheritance
     private static ETrait[] TraitArray = (ETrait[])Enum.GetValues(typeof(ETrait));
 
     // NOTE: if this method returns true: the original game code runs, if false: it doesn't.
-    [HarmonyPatch(typeof(Character), nameof(Character.InitializeTrait), new[] { typeof(Character), typeof(Character) })]
+    [HarmonyPatch(typeof(Character), nameof(Character.InitializeTrait), [ typeof(Character), typeof(Character) ])]
     [HarmonyPrefix]
     public static bool OverrideInitializeTrait(Character female, Character male, Character __instance)
     {
-        if (Enable == null)
-            return true;
-        if (!Enable.Value)
+        if (
+            EnableNaming?.Value == true
+            && Generator.TryGetRaceName(__instance.Race, out var fullname, female.DisplayName, male.DisplayName)
+        )
+        {
+            __instance.DisplayName = fullname;
+        }
+
+        if (EnableGenetics == null || !EnableGenetics.Value)
             return true;
 
         Plugin.log?.LogMessage("Begin Custom genetic Sequencing");
@@ -250,6 +272,18 @@ public static class PunnettInheritance
         }
         __instance.SortTrait();
         return false;
+    }
+
+    [HarmonyPatch(typeof(Character), nameof(Character.InitializeTrait), [])]
+    [HarmonyPostfix]
+    public static void OverrideBabyName(Character __instance)
+    {
+        Plugin.log?.LogMessage("Overriding Name, no parents");
+
+        if (EnableNaming?.Value == true && Generator.TryGetRaceName(__instance.Race, out var fullname))
+        {
+            __instance.DisplayName = fullname;
+        }
     }
 
     private static bool TryGet(this SeqDictionary<ETrait, TraitInfo> self, ETrait key, out TraitInfo value)

@@ -19,7 +19,6 @@
   <ItemGroup>
     <PackageReference Include="BepInEx.Unity.Mono" Version="6.0.0-be.*" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
-    <PackageReference Include="newtonsoft.json" Version="13.0.3" />
 	  <PackageReference Include="UnityEngine.Modules" Version="2020.3.37" IncludeAssets="compile" />
     <Reference Include="$(SolutionDir)/Managed/Assembly-CSharp.dll" />
   </ItemGroup>
