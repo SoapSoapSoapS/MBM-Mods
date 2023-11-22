@@ -1,0 +1,42 @@
+{
+  "$id": "namefile.schema.json",
+  "title": "NameFile",
+  "type": "object",
+  "properties": {
+    "names": {
+      "description": "Either an array of string names e.g. [\"name1\"] or a an object with prefixes and suffixes used to build a name e.g. { prefix: [\"prefix1\"], suffix: [\"suffix1\"]}",
+      "anyOf": [
+        { "$ref": "#/$defs/prefixsuffix" },
+        { "$ref": "#/$defs/namelist" }
+      ]
+    },
+    "surnames": {
+      "description": "Either an array of string names e.g. [\"name1\"] or a an object with prefixes and suffixes used to build a name e.g. { prefix: [\"prefix1\"], suffix: [\"suffix1\"]}",
+      "anyOf": [
+        { "$ref": "#/$defs/prefixsuffix" },
+        { "$ref": "#/$defs/namelist" }
+      ]
+    }
+  },
+  "$defs": {
+    "namelist": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prefixsuffix": {
+      "type": "object",
+      "properties": {
+        "prefix": {
+          "description": "A list of prefixes that cab be combined with a suffix to create a name",
+          "$ref": "#/$defs/namelist"
+        },
+        "suffix": {
+          "description": "A list of suffixes that cab be combined with a prefix to create a name",
+          "$ref": "#/$defs/namelist"
+        }
+      }
+    }
+  }
+}
