@@ -2,6 +2,10 @@ name: PrBuild
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - '**.cs'
+      - '**.csproj'
 
 jobs:
   build:
@@ -16,16 +20,8 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Build
-        shell: bash
-        run: |
-          # Build everything
-          dotnet publish MBM-Mods.sln -c Release
+      - name: Install dependencies
+        run: dotnet restore
 
-      - name: Report Status
-        uses: LouisBrunner/checks-action@v1.6.1
-        if: always()
-        with:
-          name: Dotnet Build Check
-          token: ${{ secrets.GITHUB_TOKEN }}
-          conclusion: ${{ job.status }}
+      - name: Build
+        run: dotnet publish MBM-Mods.sln -c Release --no-restore
