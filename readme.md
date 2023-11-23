@@ -1,6 +1,8 @@
 # MBM-Mods
 *SoapBoxHero's mods for MonsterBlackMarket*
 
+[![Release Build](https://github.com/SoapSoapSoapS/MBM-Mods/actions/workflows/publish.yaml/badge.svg)](https://github.com/SoapSoapSoapS/MBM-Mods/actions/workflows/publish.yaml)
+
 ## Installation
 1. Backup your game files.
 1. Install bepinex [6.0.0-pre.1](https://github.com/BepInEx/BepInEx/releases/tag/v6.0.0-pre.1)
