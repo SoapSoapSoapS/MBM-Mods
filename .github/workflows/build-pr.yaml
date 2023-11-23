@@ -1,19 +1,12 @@
-name: Publish
+name: PrBuild
 on:
-  release:
-    types: [published]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  release:
-    name: Release
-    strategy:
-      matrix:
-        kind: ["windows"]
-        include:
-          - kind: windows
-            os: windows-latest
-            target: win-x64
-    runs-on: ${{ matrix.os }}
+  build:
+    name: Build
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
