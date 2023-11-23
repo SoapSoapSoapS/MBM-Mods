@@ -13,7 +13,7 @@ public static class SuperPixy
     /// <summary>
     /// Enables/Disables all mod functionality.
     /// </summary>
-    public static ConfigEntry<bool>? Enable;
+    public static ConfigEntry<bool>? CustomPixyLogic;
 
     /// <summary>
     /// If enabled, will rescue low health units from any state.
@@ -33,15 +33,15 @@ public static class SuperPixy
     /// <summary>
     /// Enables pixies to operate in the private area.
     /// </summary>
-    public static ConfigEntry<bool>? EnablePrivatePixy;
+    public static ConfigEntry<bool>? PrivatePixy;
 
     public static void Initialize(ConfigFile config)
     {
-        Enable = config.Bind(
+        CustomPixyLogic = config.Bind(
             new ConfigInfo<bool>()
             {
                 Section = nameof(SuperPixy),
-                Name = "Enable",
+                Name = nameof(CustomPixyLogic),
                 Description = "Enables/Disables all mod functionality.",
                 DefaultValue = true
             }
@@ -51,7 +51,7 @@ public static class SuperPixy
             new ConfigInfo<bool>()
             {
                 Section = nameof(SuperPixy),
-                Name = "EmergencyRescue",
+                Name = nameof(EmergencyRescue),
                 Description = "If enabled, will rescue low health units from any state.",
                 DefaultValue = false
             }
@@ -61,7 +61,7 @@ public static class SuperPixy
             new ConfigInfo<float>()
             {
                 Section = nameof(SuperPixy),
-                Name = "SafeHealthLevel",
+                Name = nameof(SafeHealthLevel),
                 Description = "The percentage of health that the pixy will wait for before moving a unit.",
                 DefaultValue = 1f
             }
@@ -71,17 +71,17 @@ public static class SuperPixy
             new ConfigInfo<float>()
             {
                 Section = nameof(SuperPixy),
-                Name = "CriticalHealthLevel",
+                Name = nameof(CriticalHealthLevel),
                 Description = "The percentage of health that the pixy will try to save unit.",
                 DefaultValue = 1f
             }
         );
 
-        EnablePrivatePixy = config.Bind(
+        PrivatePixy = config.Bind(
             new ConfigInfo<bool>()
             {
                 Section = nameof(SuperPixy),
-                Name = "CriticalHealthLevel",
+                Name = nameof(PrivatePixy),
                 Description = "Enables pixies to operate in the private area.",
                 DefaultValue = false
             }
@@ -92,7 +92,7 @@ public static class SuperPixy
     [HarmonyPrefix]
     public static bool OverrideUpdatePixy(Female __instance)
     {
-        if (Enable?.Value != true)
+        if (CustomPixyLogic?.Value != true)
             return true;
 
         PixyLogic(__instance);
@@ -121,12 +121,6 @@ public static class SuperPixy
 
         FindDesiredDestination(unit, out var destinationType, out var pushPreviousRoom);
 
-        if (destinationType != ERoomType.Depot && destinationType != ERoomType.None)
-        {
-            MoveToNewRoom(unit, destinationType, pushPreviousRoom);
-            return;
-        }
-
         if (destinationType == ERoomType.Depot)
         {
             if (playerData.Allocate(unit, ESector.Product, instance.Depot.Slot, -1, false, -1, true))
@@ -136,20 +130,23 @@ public static class SuperPixy
             return;
         }
 
-        
+        if (destinationType != ERoomType.None)
+        {
+            MoveToNewRoom(unit, destinationType, pushPreviousRoom);
+            return;
+        }
     }
 
     private static bool IsUnitMoveable(Female unit)
     {
         var playerData = GameManager.Instance.PlayerData;
 
-        if (unit.IsPrivate && EnablePrivatePixy?.Value != true)
+        if (unit.IsPrivate && PrivatePixy?.Value != true)
         {
             return false;
         }
 
-        // Check if unit is in an invalid state
-
+        // Checks if unit is being moved already
         var sector = unit.Sector;
         if (sector != ESector.Female && sector != ESector.Baby)
             return false;
@@ -168,10 +165,10 @@ public static class SuperPixy
             return true;
 
         var roomType = unit.Room.RoomType;
-        // Check for customers in room
+        // Checks for customers in room
         switch (roomType)
         {
-            // Check that audience of Birth Show Room is empty
+            // Checks that audience of Birth Show Room is empty
             case ERoomType.BirthShowRoom:
                 if (playerData.GetUnit(ESector.Npc, unit.Slot, 6) != null)
                     return false;
@@ -181,7 +178,7 @@ public static class SuperPixy
                     return false;
                 return true;
 
-            // Check partnered rooms that don't support pixy
+            // Checks partnered rooms that don't support pixy
             case ERoomType.None:
             case ERoomType.Pillar:
             case ERoomType.BackDoor:
@@ -191,7 +188,7 @@ public static class SuperPixy
             case ERoomType.VipRoom:
                 return unit.Partner != null;
 
-            // Check that audience of Vvip Room is empty
+            // Checks that audience of Vvip Room is empty
             case ERoomType.VvipRoom:
                 if (playerData.GetUnit(ESector.Npc, unit.Slot, 0) != null)
                     return false;
@@ -199,7 +196,7 @@ public static class SuperPixy
                     return false;
                 return true;
 
-            // Check that audience of Horse Show Room is empty
+            // Checks that audience of Horse Show Room is empty
             case ERoomType.Stall:
                 switch (unit.Seat)
                 {
@@ -395,7 +392,7 @@ public static class SuperPixy
         var playerData = GameManager.Instance.PlayerData;
         Unit room = playerData.GetUnit(unit.PreviousRoomIdStack.Peek());
 
-        // check if the room still exists
+        // Checks if the room still exists
         if (room == null)
         {
             unit.PreviousRoomIdStack.Pop();
@@ -404,7 +401,7 @@ public static class SuperPixy
             return true;
         }
 
-        // check if the room has an available slot
+        // Checks if the room has an available slot
         if (
             playerData.Allocate(unit, ESector.Female, room.Slot, unit.PreviousSeatStack.Peek(), true, -1, true)
             || playerData.Allocate(unit, ESector.Female, room.Slot, -1, true, -1, true)
