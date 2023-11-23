@@ -31,6 +31,9 @@ public static class DragInStoppedTime
     [HarmonyPrefix]
     public static void PreDrag(GameManager __instance)
     {
+        if(Enable == null) return;
+        if(!Enable.Value) return;
+        
         GameManager.Instance.GameSpeedIsZero = false;
     }
 
