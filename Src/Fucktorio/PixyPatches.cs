@@ -113,6 +113,30 @@ public static class SuperPixy
         {
             unit.FeedFood();
         }
+
+        if(unit.PreviousRoomIdStack.Count != 0 && ReturnToPreviousRoom(unit))
+        {
+            return;
+        }
+
+        FindDesiredDestination(unit, out var destinationType, out var pushPreviousRoom);
+
+        if (destinationType != ERoomType.Depot && destinationType != ERoomType.None)
+        {
+            MoveToNewRoom(unit, destinationType, pushPreviousRoom);
+            return;
+        }
+
+        if (destinationType == ERoomType.Depot)
+        {
+            if (playerData.Allocate(unit, ESector.Product, instance.Depot.Slot, -1, false, -1, true))
+            {
+                MovePixy(unit, instance.Depot, EPixyType.Once);
+            }
+            return;
+        }
+
+        
     }
 
     private static bool IsUnitMoveable(Female unit)
@@ -203,10 +227,10 @@ public static class SuperPixy
         }
     }
 
-    private static EResult TryFindDestination(Female unit, out ERoomType destination, out bool pushPreviousRoom)
+    private static void FindDesiredDestination(Female unit, out ERoomType destinationType, out bool pushPreviousRoom)
     {
         var playerData = GameManager.Instance.PlayerData;
-        destination = ERoomType.None;
+        destinationType = ERoomType.None;
         pushPreviousRoom = true;
 
         var room = unit.Room;
@@ -221,19 +245,19 @@ public static class SuperPixy
                 case ERoomType.DeliveryRoom:
                     if (unit.MovedSoon)
                     {
-                        destination = ERoomType.SlaveCage;
+                        destinationType = ERoomType.SlaveCage;
                         pushPreviousRoom = false;
-                        return EResult.Continue;
+                        return;
                     }
                     if (unit.SoldSoon)
                     {
-                        destination = ERoomType.Depot;
+                        destinationType = ERoomType.Depot;
                         pushPreviousRoom = false;
-                        return EResult.Continue;
+                        return;
                     }
                     break;
             }
-            return EResult.Continue;
+            return;
         }
 
         // handle dead unit
@@ -241,19 +265,19 @@ public static class SuperPixy
         {
             if (room == null || roomType != ERoomType.Morgue)
             {
-                destination = ERoomType.MilkingRoom;
+                destinationType = ERoomType.MilkingRoom;
                 pushPreviousRoom = false;
-                return EResult.Continue;
+                return;
             }
-            return EResult.Continue;
+            return;
         }
 
         // unit marked for sale
         if (unit.SoldSoon && roomType == ERoomType.SlaveCage)
         {
-            destination = ERoomType.Depot;
+            destinationType = ERoomType.Depot;
             pushPreviousRoom = false;
-            return EResult.Continue;
+            return;
         }
 
         // unit at risk of death
@@ -265,15 +289,15 @@ public static class SuperPixy
             && unit.MentalityPercent < criticalHealth
         )
         {
-            destination = ERoomType.SlaveCage;
-            return EResult.Continue;
+            destinationType = ERoomType.SlaveCage;
+            return;
         }
 
         // ignore healing units
         var safeHealth = SafeHealthLevel?.Value ?? 1f;
         if (roomType == ERoomType.SlaveCage && unit.MentalityPercent < safeHealth)
         {
-            return EResult.Continue;
+            return;
         }
 
         // handle unit ready to give birth
@@ -301,7 +325,7 @@ public static class SuperPixy
             }
 
             if (roomType != ERoomType.SlaveCage)
-                destination = ERoomType.SlaveCage;
+                destinationType = ERoomType.SlaveCage;
 
             if (
                 unit.PixyShowFirst
@@ -310,45 +334,63 @@ public static class SuperPixy
                 && playerData.ExistBirthShowRoomAvailable()
             )
             {
-                destination = ERoomType.BirthShowRoom;
-                return EResult.Continue;
+                destinationType = ERoomType.BirthShowRoom;
+                return;
             }
 
             if (!isTentacleEggs && playerData.ExistDeliveryRoomAvailable())
             {
-                destination = ERoomType.DeliveryRoom;
-                return EResult.Continue;
+                destinationType = ERoomType.DeliveryRoom;
+                return;
             }
 
             if (!isMonsterBaby && playerData.ExistBirthShowRoomAvailable())
             {
-                destination = ERoomType.BirthShowRoom;
-                return EResult.Continue;
+                destinationType = ERoomType.BirthShowRoom;
+                return;
             }
 
-            return EResult.Continue;
+            return;
         }
 
         if (roomType == ERoomType.SlaveCage)
         {
             if (unit.PixyMilk && playerData.FloraPixyMilk)
             {
-                destination = ERoomType.MilkingRoom;
-                return EResult.Continue;
+                destinationType = ERoomType.MilkingRoom;
+                return;
             }
 
-            if (unit.PixyCapsule && playerData.FloraPixyCapsule)
+            if (unit.PixyCapsule && playerData.FloraPixyCapsule && unit.Training < GameManager.ConfigData.MaxTraining)
             {
-                destination = ERoomType.MilkingRoom;
-                return EResult.Continue;
+                destinationType = ERoomType.MilkingRoom;
+                return;
             }
         }
+
+        return;
     }
 
-    /// <summary>
-    /// Attempts to move to
-    /// </summary>
-    private static EResult TryReturnToPreviousRoom(Female unit)
+    private static void MoveToNewRoom(Female unit, ERoomType destinationType, bool pushPreviousRoom)
+    {
+        var playerData = GameManager.Instance.PlayerData;
+        var pixyType = pushPreviousRoom ? EPixyType.Start : EPixyType.Once;
+
+        if (destinationType == ERoomType.Depot) { }
+
+        foreach (Room room in playerData.GetClosedRoomList(destinationType, unit.Room.Position, false))
+        {
+            if (playerData.Allocate(unit, ESector.Female, room.Slot, -1, true, -1, true))
+            {
+                MovePixy(unit, room, pixyType);
+                return;
+            }
+        }
+
+        return;
+    }
+
+    private static bool ReturnToPreviousRoom(Female unit)
     {
         var playerData = GameManager.Instance.PlayerData;
         Unit room = playerData.GetUnit(unit.PreviousRoomIdStack.Peek());
@@ -359,7 +401,7 @@ public static class SuperPixy
             unit.PreviousRoomIdStack.Pop();
             unit.PreviousSeatStack.Pop();
             unit.PixyIsWaiting = false;
-            return EResult.Failure;
+            return true;
         }
 
         // check if the room has an available slot
@@ -368,25 +410,18 @@ public static class SuperPixy
             || playerData.Allocate(unit, ESector.Female, room.Slot, -1, true, -1, true)
         )
         {
-            switch (TryMovePixy(unit, room))
-            {
-                case EResult.Success:
-                    unit.PreviousRoomIdStack.Pop();
-                    unit.PreviousSeatStack.Pop();
-                    unit.PixyIsWaiting = false;
-                    return EResult.Success;
-            }
+            MovePixy(unit, room, EPixyType.End);
+            return true;
         }
         else
         {
             // wait until moving is possible
             unit.PixyIsWaiting = true;
+            return false;
         }
-
-        return EResult.Continue;
     }
 
-    private static EResult TryMovePixy(Female unit, Unit room)
+    private static void MovePixy(Female unit, Unit destination, EPixyType pixyType)
     {
         var playerData = GameManager.Instance.PlayerData;
         var position = unit.Position;
@@ -412,21 +447,43 @@ public static class SuperPixy
                 )
             );
         movePixy.StartWorldPosition = position;
-        movePixy.EndWorldPosition = unit.Position;
+        if (destination is Room room && room.RoomType == ERoomType.Depot)
+            movePixy.EndWorldPosition = room.Center;
+        else
+            movePixy.EndWorldPosition = unit.Position;
         float duration =
             Vector3.Distance(movePixy.StartWorldPosition, movePixy.EndWorldPosition)
             / 10.24f
             * GameManager.ConfigData.PixyMoveSpeed;
         movePixy.Duration = duration;
         movePixy.PixyType = EPixyType.End;
-        movePixy.ActivateAsPooledObject();
-        unit.Fade(EFadeType.In, 0f, 1f, false, duration);
-        if (room is Room room8 && room8.PixyUnitSeqList.Contains(unit.UnitId))
+
+        movePixy.PixyType = pixyType;
+        if (pixyType == EPixyType.Start)
         {
-            room8.PixyUnitSeqList.Remove(unit.UnitId);
-            return EResult.Success;
+            unit.PreviousRoomIdStack.Push(unit.Room.UnitId);
+            unit.PreviousSeatStack.Push(unit.Seat);
+            if (!unit.Room.PixyUnitSeqList.Contains(unit.UnitId))
+            {
+                unit.Room.PixyUnitSeqList.Add(unit.UnitId);
+            }
         }
 
-        return EResult.Continue;
+        movePixy.ActivateAsPooledObject();
+        unit.Fade(EFadeType.In, 0f, 1f, false, duration);
+
+        if (pixyType == EPixyType.End)
+        {
+            if (destination is Room room2 && room2.PixyUnitSeqList.Contains(unit.UnitId))
+            {
+                room2.PixyUnitSeqList.Remove(unit.UnitId);
+            }
+
+            unit.PreviousRoomIdStack.Pop();
+            unit.PreviousSeatStack.Pop();
+            unit.PixyIsWaiting = false;
+        }
+
+        return;
     }
 }
